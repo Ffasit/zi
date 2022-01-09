@@ -691,23 +691,23 @@ SilentGroup = Redis:sismember(COCAINE.."COCAINE:SilentGroup:Group"..ChatId,UserI
 }
 end
 function Reply_Status(UserId,TextMsg)
-local UserInfo = LuaTele.getUser(UserId)
-for Name_User in string.gmatch(UserInfo.first_name, "[^%s]+" ) do
-UserInfo.first_name = Name_User
+local ban = LuaTele.getUser(UserId)
+for Name_User in string.gmatch(ban.first_name, "[^%s]+" ) do
+ban.first_name = Name_User
 break
 end
-if UserInfo.username then
-UserInfousername = '['..UserInfo.first_name..'](t.me/'..UserInfo.username..')'
+if ban.username then
+banusername = '['..ban.first_name..'](t.me/'..ban.username..')'
 else
-UserInfousername = '['..UserInfo.first_name..'](tg://user?id='..UserId..')'
+banusername = '['..ban.first_name..'](tg://user?id='..UserId..')'
 end
 return {
-Lock     = '\n* ⦁ بواسطه ⇦ *'..UserInfousername..'\n*'..TextMsg..'\n ⦁ خاصيه المسح *',
-unLock   = '\n* ⦁ بواسطه ⇦ *'..UserInfousername..'\n'..TextMsg,
-lockKtm  = '\n* ⦁ بواسطه ⇦ *'..UserInfousername..'\n*'..TextMsg..'\n ⦁ خاصيه الكتم *',
-lockKid  = '\n* ⦁ بواسطه ⇦ *'..UserInfousername..'\n*'..TextMsg..'\n ⦁ خاصيه التقييد *',
-lockKick = '\n* ⦁ بواسطه ⇦ *'..UserInfousername..'\n*'..TextMsg..'\n ⦁ خاصيه الطرد *',
-Reply    = '\n* ⦁ المستخدم ⇦ *'..UserInfousername..'\n*'..TextMsg..'*'
+Lock     = '\n* ⦁ بواسطه ⇦ *'..banusername..'\n*'..TextMsg..'\n ⦁ خاصيه المسح *',
+unLock   = '\n* ⦁ بواسطه ⇦ *'..banusername..'\n'..TextMsg,
+lockKtm  = '\n* ⦁ بواسطه ⇦ *'..banusername..'\n*'..TextMsg..'\n ⦁ خاصيه الكتم *',
+lockKid  = '\n* ⦁ بواسطه ⇦ *'..banusername..'\n*'..TextMsg..'\n ⦁ خاصيه التقييد *',
+lockKick = '\n* ⦁ بواسطه ⇦ *'..banusername..'\n*'..TextMsg..'\n ⦁ خاصيه الطرد *',
+Reply    = '\n* ⦁ المستخدم ⇦ *'..banusername..'\n*'..TextMsg..'*'
 }
 end
 function StatusCanOrNotCan(ChatId,UserId)
@@ -974,21 +974,21 @@ return false
 end 
 if msg.content.luatele == "messageChatJoinByLink" then
 if Redis:get(COCAINE.."COCAINE:Status:Welcome"..msg_chat_id) then
-local UserInfo = LuaTele.getUser(msg.sender.user_id)
+local ban = LuaTele.getUser(msg.sender.user_id)
 local Get_Chat = LuaTele.getChat(msg_chat_id)
 local Welcome = Redis:get(COCAINE.."COCAINE:Welcome:Group"..msg_chat_id)
 if Welcome then 
-if UserInfo.username then
-UserInfousername = '@'..UserInfo.username
+if ban.username then
+banusername = '@'..ban.username
 else
-UserInfousername = 'لا يوجد '
+banusername = 'لا يوجد '
 end
-Welcome = Welcome:gsub('{name}',UserInfo.first_name) 
-Welcome = Welcome:gsub('{user}',UserInfousername) 
+Welcome = Welcome:gsub('{name}',ban.first_name) 
+Welcome = Welcome:gsub('{user}',banusername) 
 Welcome = Welcome:gsub('{NameCh}',Get_Chat.title) 
 return LuaTele.sendText(msg_chat_id,msg_id,Welcome,"md")  
 else
-return LuaTele.sendText(msg_chat_id,msg_id,' ⦁ اطلق دخول ['..UserInfo.first_name..'](tg://user?id='..msg.sender.user_id..')\n ⦁ نورت الكروب {'..Get_Chat.title..'}',"md")  
+return LuaTele.sendText(msg_chat_id,msg_id,' ⦁ اطلق دخول ['..ban.first_name..'](tg://user?id='..msg.sender.user_id..')\n ⦁ نورت الكروب {'..Get_Chat.title..'}',"md")  
 end
 end
 end
@@ -1599,13 +1599,13 @@ local document = Redis:get(COCAINE.."COCAINE:Add:Rd:Sudo:File"..text)
 local audio = Redis:get(COCAINE.."COCAINE:Add:Rd:Sudo:Audio"..text)
 local video_note = Redis:get(COCAINE.."COCAINE:Add:Rd:Sudo:video_note"..text)
 if Text then 
-local UserInfo = LuaTele.getUser(msg.sender.user_id)
+local ban = LuaTele.getUser(msg.sender.user_id)
 local NumMsg = Redis:get(COCAINE..'COCAINE:Num:Message:User'..msg_chat_id..':'..msg.sender.user_id) or 0
 local TotalMsg = Total_message(NumMsg)
 local Status_Gps = msg.Name_Controller
 local NumMessageEdit = Redis:get(COCAINE..'COCAINE:Num:Message:Edit'..msg_chat_id..msg.sender.user_id) or 0
-local Text = Text:gsub('#username',(UserInfo.username or 'لا يوجد')) 
-local Text = Text:gsub('#name',UserInfo.first_name)
+local Text = Text:gsub('#username',(ban.username or 'لا يوجد')) 
+local Text = Text:gsub('#name',ban.first_name)
 local Text = Text:gsub('#id',msg.sender.user_id)
 local Text = Text:gsub('#edit',NumMessageEdit)
 local Text = Text:gsub('#msgs',NumMsg)
@@ -1648,13 +1648,13 @@ local document = Redis:get(COCAINE.."COCAINE:Add:Rd:Manager:File"..text..msg_cha
 local audio = Redis:get(COCAINE.."COCAINE:Add:Rd:Manager:Audio"..text..msg_chat_id)
 local video_note = Redis:get(COCAINE.."COCAINE:Add:Rd:Manager:video_note"..text..msg_chat_id)
 if Texingt then 
-local UserInfo = LuaTele.getUser(msg.sender.user_id)
+local ban = LuaTele.getUser(msg.sender.user_id)
 local NumMsg = Redis:get(COCAINE..'COCAINE:Num:Message:User'..msg_chat_id..':'..msg.sender.user_id) or 0
 local TotalMsg = Total_message(NumMsg) 
 local Status_Gps = msg.Name_Controller
 local NumMessageEdit = Redis:get(COCAINE..'COCAINE:Num:Message:Edit'..msg_chat_id..msg.sender.user_id) or 0
-local Texingt = Texingt:gsub('#username',(UserInfo.username or 'لا يوجد')) 
-local Texingt = Texingt:gsub('#name',UserInfo.first_name)
+local Texingt = Texingt:gsub('#username',(ban.username or 'لا يوجد')) 
+local Texingt = Texingt:gsub('#name',ban.first_name)
 local Texingt = Texingt:gsub('#id',msg.sender.user_id)
 local Texingt = Texingt:gsub('#edit',NumMessageEdit)
 local Texingt = Texingt:gsub('#msgs',NumMsg)
@@ -2373,9 +2373,9 @@ Redis:set(COCAINE..'COCAINE:Num:Add:Bot',text:match("تعين عدد الاعض�
 LuaTele.sendText(msg_chat_id,msg_id,'* ⦁ تم تعيين عدد اعضاء تفعيل البوت اكثر من : '..text:match("تعين عدد الاعضاء (%d+)$")..' عضو *',"md",true)  
 elseif text == 'الاحصائيات' or text == '『 الاحصائيات 』' and msg.DevelopersQ then
 local photo = LuaTele.getUserProfilePhotos(COCAINE)
-local UserInfo = LuaTele.getUser(COCAINE)
-for Name_User in string.gmatch(UserInfo.first_name, "[^%s]+" ) do
-UserInfo.first_name = Name_User
+local ban = LuaTele.getUser(COCAINE)
+for Name_User in string.gmatch(ban.first_name, "[^%s]+" ) do
+ban.first_name = Name_User
 break
 end 
 NamesBot = (Redis:get(COCAINE.."COCAINE:Name:Bot") or "كوكين")
@@ -2428,9 +2428,9 @@ data = {
 }
 }
 if not msg.ControllerBot then
-local UserInfo = LuaTele.getUser(msg.sender.user_id)
-for Name_User in string.gmatch(UserInfo.first_name, "[^%s]+" ) do
-UserInfo.first_name = Name_User
+local ban = LuaTele.getUser(msg.sender.user_id)
+for Name_User in string.gmatch(ban.first_name, "[^%s]+" ) do
+ban.first_name = Name_User
 break
 end
 local reply_markup = LuaTele.replyMarkup{
@@ -2444,7 +2444,7 @@ data = {
 },
 }
 }
-LuaTele.sendText(Sudo_Id,0,'*\n ⦁ تم تفعيل مجموعه جديده \n ⦁ المستخدم -›『*['..UserInfo.first_name..'](tg://user?id='..msg.sender.user_id..')*』\n ⦁ معلومات المجموعه -› \n ⦁ عدد الاعضاء -› '..Info_Chats.member_count..'\n ⦁ عدد الادمنيه -› '..Info_Chats.administrator_count..'\n ⦁ عدد المطرودين -› '..Info_Chats.banned_count..'\n ⦁ عدد المقيدين -› '..Info_Chats.restricted_count..'*',"md",true, false, false, false, reply_markup)
+LuaTele.sendText(Sudo_Id,0,'*\n ⦁ تم تفعيل مجموعه جديده \n ⦁ المستخدم -›『*['..ban.first_name..'](tg://user?id='..msg.sender.user_id..')*』\n ⦁ معلومات المجموعه -› \n ⦁ عدد الاعضاء -› '..Info_Chats.member_count..'\n ⦁ عدد الادمنيه -› '..Info_Chats.administrator_count..'\n ⦁ عدد المطرودين -› '..Info_Chats.banned_count..'\n ⦁ عدد المقيدين -› '..Info_Chats.restricted_count..'*',"md",true, false, false, false, reply_markup)
 end
 Redis:sadd(COCAINE.."COCAINE:ChekBotAdd",msg_chat_id)
 Redis:set(COCAINE.."COCAINE:Status:Id"..msg_chat_id,true) ;Redis:set(COCAINE.."COCAINE:Status:Reply"..msg_chat_id,true) ;Redis:set(COCAINE.."COCAINE:Status:ReplySudo"..msg_chat_id,true) ;Redis:set(COCAINE.."COCAINE:Status:BanId"..msg_chat_id,true) ;Redis:set(COCAINE.."COCAINE:Status:SetId"..msg_chat_id,true) 
@@ -2478,9 +2478,9 @@ end
 return LuaTele.sendText(msg_chat_id,msg_id,'\n* ⦁ اسم المجموعه -›『*['..Get_Chat.title..']('..Info_Chats.invite_link.invite_link..')*』\n ⦁ تم التفعيل من قبل *',"md",true)  
 else
 if not msg.ControllerBot then
-local UserInfo = LuaTele.getUser(msg.sender.user_id)
-for Name_User in string.gmatch(UserInfo.first_name, "[^%s]+" ) do
-UserInfo.first_name = Name_User
+local ban = LuaTele.getUser(msg.sender.user_id)
+for Name_User in string.gmatch(ban.first_name, "[^%s]+" ) do
+ban.first_name = Name_User
 break
 end
 local reply_markup = LuaTele.replyMarkup{
@@ -2494,7 +2494,7 @@ data = {
 },
 }
 }
-LuaTele.sendText(Sudo_Id,0,'*\n* ⦁ تم تفعيل مجموعه جديده *\n*⦁ المستخدم -›『*['..UserInfo.first_name..'](tg://user?id='..msg.sender.user_id..')*』\n* ⦁ معلومات المجموعه -› *\n* ⦁ عدد الاعضاء -› *'..Info_Chats.member_count..'\n* ⦁ عدد الادمنيه -› *'..Info_Chats.administrator_count..'\n* ⦁ عدد المطرودين -› *'..Info_Chats.banned_count..'\n* ⦁ عدد المقيدين -› *'..Info_Chats.restricted_count..'*',"md",true, false, false, false, reply_markup)
+LuaTele.sendText(Sudo_Id,0,'*\n* ⦁ تم تفعيل مجموعه جديده *\n*⦁ المستخدم -›『*['..ban.first_name..'](tg://user?id='..msg.sender.user_id..')*』\n* ⦁ معلومات المجموعه -› *\n* ⦁ عدد الاعضاء -› *'..Info_Chats.member_count..'\n* ⦁ عدد الادمنيه -› *'..Info_Chats.administrator_count..'\n* ⦁ عدد المطرودين -› *'..Info_Chats.banned_count..'\n* ⦁ عدد المقيدين -› *'..Info_Chats.restricted_count..'*',"md",true, false, false, false, reply_markup)
 end
 local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
@@ -2522,9 +2522,9 @@ if not Redis:sismember(COCAINE.."COCAINE:ChekBotAdd",msg_chat_id) then
 return LuaTele.sendText(msg_chat_id,msg_id,'\n* ⦁ اسم المجموعه -›『*['..Get_Chat.title..']('..Info_Chats.invite_link.invite_link..')*』\n ⦁ تم التعطيل من قبل *',"md",true)  
 else
 if not msg.ControllerBot then
-local UserInfo = LuaTele.getUser(msg.sender.user_id)
-for Name_User in string.gmatch(UserInfo.first_name, "[^%s]+" ) do
-UserInfo.first_name = Name_User
+local ban = LuaTele.getUser(msg.sender.user_id)
+for Name_User in string.gmatch(ban.first_name, "[^%s]+" ) do
+ban.first_name = Name_User
 break
 end
 local reply_markup = LuaTele.replyMarkup{
@@ -2538,7 +2538,7 @@ data = {
 },
 }
 }
-LuaTele.sendText(Sudo_Id,0,'*\n ⦁ تم تعطيل مجموعه جديده \n ⦁ المستخدم -›『*['..UserInfo.first_name..'](tg://user?id='..msg.sender.user_id..')*』\n ⦁ معلومات المجموعه -› \n ⦁ عدد الاعضاء -› '..Info_Chats.member_count..'\n ⦁ عدد الادمنيه -› '..Info_Chats.administrator_count..'\n ⦁ عدد المطرودين -› '..Info_Chats.banned_count..'\n ⦁ عدد المقيدين -› '..Info_Chats.restricted_count..'*',"md",true, false, false, false, reply_markup)
+LuaTele.sendText(Sudo_Id,0,'*\n ⦁ تم تعطيل مجموعه جديده \n ⦁ المستخدم -›『*['..ban.first_name..'](tg://user?id='..msg.sender.user_id..')*』\n ⦁ معلومات المجموعه -› \n ⦁ عدد الاعضاء -› '..Info_Chats.member_count..'\n ⦁ عدد الادمنيه -› '..Info_Chats.administrator_count..'\n ⦁ عدد المطرودين -› '..Info_Chats.banned_count..'\n ⦁ عدد المقيدين -› '..Info_Chats.restricted_count..'*',"md",true, false, false, false, reply_markup)
 end
 Redis:srem(COCAINE.."COCAINE:ChekBotAdd",msg_chat_id)
 return LuaTele.sendText(msg_chat_id,msg_id,'\n* ⦁ اسم المجموعه -›『*['..Get_Chat.title..']('..Info_Chats.invite_link.invite_link..')*』\n ⦁ تم التعطيل من قبل *','md',true)
@@ -2562,9 +2562,9 @@ if not Redis:sismember(COCAINE.."COCAINE:ChekBotAdd",msg_chat_id) then
 return LuaTele.sendText(msg_chat_id,msg_id,'\n* ⦁ اسم المجموعه -›『*['..Get_Chat.title..']('..Info_Chats.invite_link.invite_link..')*』\n ⦁ تم التعطيل من قبل *',"md",true)  
 else
 if not msg.ControllerBot then
-local UserInfo = LuaTele.getUser(msg.sender.user_id)
-for Name_User in string.gmatch(UserInfo.first_name, "[^%s]+" ) do
-UserInfo.first_name = Name_User
+local ban = LuaTele.getUser(msg.sender.user_id)
+for Name_User in string.gmatch(ban.first_name, "[^%s]+" ) do
+ban.first_name = Name_User
 break
 end
 local reply_markup = LuaTele.replyMarkup{
@@ -2578,7 +2578,7 @@ data = {
 },
 }
 }
-LuaTele.sendText(Sudo_Id,0,'*\n ⦁ تم تعطيل مجموعه جديده \n ⦁ المستخدم -›『 *['..UserInfo.first_name..'](tg://user?id='..msg.sender.user_id..')*』\n ⦁ معلومات المجموعه -› \n ⦁ عدد الاعضاء -› '..Info_Chats.member_count..'\n ⦁ عدد الادمنيه -› '..Info_Chats.administrator_count..'\n ⦁ عدد المطرودين -› '..Info_Chats.banned_count..'\n ⦁ عدد المقيدين -› '..Info_Chats.restricted_count..'*',"md",true, false, false, false, reply_markup)
+LuaTele.sendText(Sudo_Id,0,'*\n ⦁ تم تعطيل مجموعه جديده \n ⦁ المستخدم -›『 *['..ban.first_name..'](tg://user?id='..msg.sender.user_id..')*』\n ⦁ معلومات المجموعه -› \n ⦁ عدد الاعضاء -› '..Info_Chats.member_count..'\n ⦁ عدد الادمنيه -› '..Info_Chats.administrator_count..'\n ⦁ عدد المطرودين -› '..Info_Chats.banned_count..'\n ⦁ عدد المقيدين -› '..Info_Chats.restricted_count..'*',"md",true, false, false, false, reply_markup)
 end
 Redis:srem(COCAINE.."COCAINE:ChekBotAdd",msg_chat_id)
 return LuaTele.sendText(msg_chat_id,msg_id,'\n* ⦁ اسم المجموعه -›『*['..Get_Chat.title..']('..Info_Chats.invite_link.invite_link..')*』\n ⦁ تم التعطيل من قبل *','md',true)
@@ -2589,7 +2589,7 @@ if text == "ايدي" and msg.reply_to_message_id == 0 then
 if not Redis:get(COCAINE.."COCAINE:Status:Id"..msg_chat_id) then
 return false
 end
-local UserInfo = LuaTele.getUser(msg.sender.user_id)
+local ban = LuaTele.getUser(msg.sender.user_id)
 local photo = LuaTele.getUserProfilePhotos(msg.sender.user_id)
 local UserId = msg.sender.user_id
 local RinkBot = msg.Name_Controller
@@ -2601,17 +2601,17 @@ local NumberGames = Redis:get(COCAINE.."COCAINE:Num:Add:Games"..msg.chat_id..msg
 local NumAdd = Redis:get(COCAINE.."COCAINE:Num:Add:Memp"..msg.chat_id..":"..msg.sender.user_id) or 0
 local Texting = {'〈 جمالك ده طبيعي يولا 🙈💗 〉',"〈 غير بقاا صورتك يا قمر 😻🤍 〉 ","〈 يخرشي علي العسل ده 🥺💔 〉","〈 صورتك ولا صورت القمر 🌙💕 〉","〈 صورتك عثل ينوحيي 🙈🌝 〉",}
 local Description = Texting[math.random(#Texting)]
-if UserInfo.username then
-UserInfousername = '@'..UserInfo.username..''
+if ban.username then
+banusername = '@'..ban.username..''
 else
-UserInfousername = 'لا يوجد'
+banusername = 'لا يوجد'
 end
 Get_Is_Id = Redis:get(COCAINE.."COCAINE:Set:Id:Groups") or Redis:get(COCAINE.."COCAINE:Set:Id:Group"..msg_chat_id)
 if Redis:get(COCAINE.."COCAINE:Status:IdPhoto"..msg_chat_id) then
 if Get_Is_Id then
 local Get_Is_Id = Get_Is_Id:gsub('#AddMem',NumAdd) 
 local Get_Is_Id = Get_Is_Id:gsub('#id',msg.sender.user_id) 
-local Get_Is_Id = Get_Is_Id:gsub('#username',UserInfousername) 
+local Get_Is_Id = Get_Is_Id:gsub('#username',banusername) 
 local Get_Is_Id = Get_Is_Id:gsub('#msgs',TotalMsg) 
 local Get_Is_Id = Get_Is_Id:gsub('#edit',TotalEdit) 
 local Get_Is_Id = Get_Is_Id:gsub('#stast',RinkBot) 
@@ -2629,7 +2629,7 @@ if photo.total_count > 0 then
 return LuaTele.sendPhoto(msg.chat_id, msg.id, photo.photos[1].sizes[#photo.photos[1].sizes].photo.remote.id,
 '\n*  '..Description..
 '\n𖠋 ɪᴅ -› '..UserId..
-'\n𖠋 ᴜѕᴇ -› '..UserInfousername..
+'\n𖠋 ᴜѕᴇ -› '..banusername..
 '\n𖠋 ѕᴛᴀ -› '..RinkBot..
 '\n𖠋 ѕᴡʀᴋ -› '..TotalPhoto..
 '\n𖠋 ᴍѕɢ -› '..TotalMsg..
@@ -2639,7 +2639,7 @@ return LuaTele.sendPhoto(msg.chat_id, msg.id, photo.photos[1].sizes[#photo.photo
 else
 return LuaTele.sendText(msg_chat_id,msg_id,
 '\n𖠋 ɪᴅ -› '..UserId..
-'\n𖠋 ᴜѕᴇ -› '..UserInfousername..
+'\n𖠋 ᴜѕᴇ -› '..banusername..
 '\n𖠋 ѕᴛᴀ -› '..RinkBot..
 '\n𖠋 ᴍѕɢ -› '..TotalMsg..
 '\n𖠋 ᴛᴘᴅʏʟᴀᴛᴋ -› '..TotalEdit..
@@ -2651,7 +2651,7 @@ else
 if Get_Is_Id then
 local Get_Is_Id = Get_Is_Id:gsub('#AddMem',NumAdd) 
 local Get_Is_Id = Get_Is_Id:gsub('#id',msg.sender.user_id) 
-local Get_Is_Id = Get_Is_Id:gsub('#username',UserInfousername) 
+local Get_Is_Id = Get_Is_Id:gsub('#username',banusername) 
 local Get_Is_Id = Get_Is_Id:gsub('#msgs',TotalMsg) 
 local Get_Is_Id = Get_Is_Id:gsub('#edit',TotalEdit) 
 local Get_Is_Id = Get_Is_Id:gsub('#stast',RinkBot) 
@@ -2663,7 +2663,7 @@ return LuaTele.sendText(msg_chat_id,msg_id,'['..Get_Is_Id..']',"md",true)
 else
 return LuaTele.sendText(msg_chat_id,msg_id,
 '\n*𖠋 ɪᴅ -› '..UserId..
-'\n𖠋 ᴜѕᴇ -› '..UserInfousername..
+'\n𖠋 ᴜѕᴇ -› '..banusername..
 '\n𖠋 ѕᴛᴀ -› '..RinkBot..
 '\n𖠋 ᴍѕɢ -› '..TotalMsg..
 '\n𖠋 ᴛᴘᴅʏʟᴀᴛᴋ -› '..TotalEdit..
@@ -2674,11 +2674,11 @@ end
 end
 if text == 'ايدي' or text == 'كشف'  and msg.reply_to_message_id ~= 0 then
 local Message_Reply = LuaTele.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = LuaTele.getUser(Message_Reply.sender.user_id)
-if UserInfo.username then
-UserInfousername = '@'..UserInfo.username..''
+local ban = LuaTele.getUser(Message_Reply.sender.user_id)
+if ban.username then
+banusername = '@'..ban.username..''
 else
-UserInfousername = 'لا يوجد'
+banusername = 'لا يوجد'
 end
 local UserId = Message_Reply.sender.user_id
 local RinkBot = Controller(msg_chat_id,UserId)
@@ -2690,7 +2690,7 @@ local NumberGames = Redis:get(COCAINE.."COCAINE:Num:Add:Games"..msg.chat_id..Use
 if Get_Is_Id then
 local Get_Is_Id = Get_Is_Id:gsub('#AddMem',NumAdd) 
 local Get_Is_Id = Get_Is_Id:gsub('#id',UserId) 
-local Get_Is_Id = Get_Is_Id:gsub('#username',UserInfousername) 
+local Get_Is_Id = Get_Is_Id:gsub('#username',banusername) 
 local Get_Is_Id = Get_Is_Id:gsub('#msgs',TotalMsg) 
 local Get_Is_Id = Get_Is_Id:gsub('#edit',TotalEdit) 
 local Get_Is_Id = Get_Is_Id:gsub('#stast',RinkBot) 
@@ -2700,7 +2700,7 @@ return LuaTele.sendText(msg_chat_id,msg_id,Get_Is_Id,"md",true)
 else
 return LuaTele.sendText(msg_chat_id,msg_id,
 '\n*𖠋 ɪᴅ -› '..UserId..
-'\n𖠋 ᴜѕᴇ -› '..UserInfousername..
+'\n𖠋 ᴜѕᴇ -› '..banusername..
 '\n𖠋 ѕᴛᴀ -› '..RinkBot..
 '\n𖠋 ᴍѕɢ -› '..TotalMsg..
 '\n𖠋 ᴛᴘᴅʏʟᴀᴛᴋ -› '..TotalEdit..
@@ -2710,11 +2710,11 @@ end
 end
 if text == 'الرتبه' or text == 'رتبته'  and msg.reply_to_message_id ~= 0 then
 local Message_Reply = LuaTele.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = LuaTele.getUser(Message_Reply.sender.user_id)
-if UserInfo.username then
-UserInfousername = '@'..UserInfo.username..''
+local ban = LuaTele.getUser(Message_Reply.sender.user_id)
+if ban.username then
+banusername = '@'..ban.username..''
 else
-UserInfousername = 'لا يوجد'
+banusername = 'لا يوجد'
 end
 local RinkBot = Controller(msg_chat_id,UserId)
 local NumAdd = Redis:get(COCAINE.."COCAINE:Num:Add:Memp"..msg.chat_id..":"..UserId) or 0
@@ -2792,7 +2792,7 @@ if text == 'ايديي' then
 return LuaTele.sendText(msg_chat_id,msg_id,'\nايديك -› '..msg.sender.user_id,"md",true)  
 end
 if text == 'معلوماتي' or text == 'موقعي' then
-local UserInfo = LuaTele.getUser(msg.sender.user_id)
+local ban = LuaTele.getUser(msg.sender.user_id)
 var(LuaTele.getChatMember(msg_chat_id,msg.sender.user_id))
 local StatusMember = LuaTele.getChatMember(msg_chat_id,msg.sender.user_id).status.luatele
 if (StatusMember == "chatMemberStatusCreator") then
@@ -2807,10 +2807,10 @@ local RinkBot = msg.Name_Controller
 local TotalMsg = Redis:get(COCAINE..'COCAINE:Num:Message:User'..msg_chat_id..':'..msg.sender.user_id) or 0
 local TotalEdit = Redis:get(COCAINE..'COCAINE:Num:Message:Edit'..msg_chat_id..msg.sender.user_id) or 0
 local TotalMsgT = Total_message(TotalMsg) 
-if UserInfo.username then
-UserInfousername = '@'..UserInfo.username..''
+if ban.username then
+banusername = '@'..ban.username..''
 else
-UserInfousername = 'لا يوجد'
+banusername = 'لا يوجد'
 end
 if StatusMemberChat == 'مشرف المجموعه' then 
 local GetMemberStatus = LuaTele.getChatMember(msg_chat_id,msg.sender.user_id).status
@@ -2836,7 +2836,7 @@ PermissionsUser = '*\n ⦁ صلاحيات المستخدم :\n●○━━━━
 end
 return LuaTele.sendText(msg_chat_id,msg_id,
 '\n*𖠋 ɪᴅ -› '..UserId..
-'\n𖠋 ᴜѕᴇ -› '..UserInfousername..
+'\n𖠋 ᴜѕᴇ -› '..banusername..
 '\n𖠋 ѕᴛᴀ -› '..RinkBot..
 '\n𖠋 ѕᴛᴀ ɢʀᴏᴜᴘ -› '..StatusMemberChat..
 '\n𖠋 ᴍѕɢ -› '..TotalMsg..
@@ -3038,11 +3038,11 @@ end
 if text and text:match("^تنزيل (.*)$") and msg.reply_to_message_id ~= 0 then
 local TextMsg = text:match("^تنزيل (.*)$")
 local Message_Reply = LuaTele.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = LuaTele.getUser(Message_Reply.sender.user_id)
-if UserInfo.message == "Invalid user ID" then
+local ban = LuaTele.getUser(Message_Reply.sender.user_id)
+if ban.message == "Invalid user ID" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا تستطيع فقط استخدام الامر على المستخدمين ","md",true)  
 end
-if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
+if ban and ban.type and ban.type.luatele == "userTypeBot" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا لا تستطيع استخدام الامر على البوت ","md",true)  
 end
 if TextMsg == 'مطور ثانوي' then
@@ -3166,14 +3166,14 @@ end
 
 if text and text:match('^تنزيل (.*) (%d+)$') then
 local UserId = {text:match('^تنزيل (.*) (%d+)$')}
-local UserInfo = LuaTele.getUser(UserId[2])
-if UserInfo.luatele == "error" and UserInfo.code == 6 then
+local ban = LuaTele.getUser(UserId[2])
+if ban.luatele == "error" and ban.code == 6 then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا لا تستطيع استخدام ايدي خطأ ","md",true)  
 end
-if UserInfo.message == "Invalid user ID" then
+if ban.message == "Invalid user ID" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا تستطيع فقط استخدام الامر على المستخدمين ","md",true)  
 end
-if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
+if ban and ban.type and ban.type.luatele == "userTypeBot" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا لا تستطيع استخدام الامر على البوت ","md",true)  
 end
 if UserId[1] == 'مطور ثانوي' then
@@ -3431,11 +3431,11 @@ end
 if text and text:match("^رفع (.*)$") and msg.reply_to_message_id ~= 0 then
 local TextMsg = text:match("^رفع (.*)$")
 local Message_Reply = LuaTele.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = LuaTele.getUser(Message_Reply.sender.user_id)
-if UserInfo.message == "Invalid user ID" then
+local ban = LuaTele.getUser(Message_Reply.sender.user_id)
+if ban.message == "Invalid user ID" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا تستطيع فقط استخدام الامر على المستخدمين ","md",true)  
 end
-if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
+if ban and ban.type and ban.type.luatele == "userTypeBot" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا لا تستطيع استخدام الامر على البوت ","md",true)  
 end
 if TextMsg == 'مطور ثانوي' then
@@ -3563,14 +3563,14 @@ end
 end
 if text and text:match('^رفع (.*) (%d+)$') then
 local UserId = {text:match('^رفع (.*) (%d+)$')}
-local UserInfo = LuaTele.getUser(UserId[2])
-if UserInfo.luatele == "error" and UserInfo.code == 6 then
+local ban = LuaTele.getUser(UserId[2])
+if ban.luatele == "error" and ban.code == 6 then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا لا تستطيع استخدام ايدي خطأ ","md",true)  
 end
-if UserInfo.message == "Invalid user ID" then
+if ban.message == "Invalid user ID" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا تستطيع فقط استخدام الامر على المستخدمين ","md",true)  
 end
-if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
+if ban and ban.type and ban.type.luatele == "userTypeBot" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا لا تستطيع استخدام الامر على البوت ","md",true)  
 end
 if UserId[1] == 'مطور ثانوي' then
@@ -3819,9 +3819,9 @@ return LuaTele.sendText(msg_chat_id,msg_id,"*⦁ لا يوجد مطورين ثا
 end
 ListMembers = '\n* قائمه المطورين الثانوين ⇧⇩* \n●○━━━━‌‌‏𝑪𝑶𝑪𝑨𝑰𝑵𝑬━━━━○●\n'
 for k, v in pairs(Info_Members) do
-local UserInfo = LuaTele.getUser(v)
-if UserInfo and UserInfo.username and UserInfo.username ~= "" then
-ListMembers = ListMembers.."*"..k.." - *[@"..UserInfo.username.."](tg://user?id="..v..")\n"
+local ban = LuaTele.getUser(v)
+if ban and ban.username and ban.username ~= "" then
+ListMembers = ListMembers.."*"..k.." - *[@"..ban.username.."](tg://user?id="..v..")\n"
 else
 ListMembers = ListMembers.."*"..k.." -* ["..v.."](tg://user?id="..v..")\n"
 end
@@ -3845,9 +3845,9 @@ return LuaTele.sendText(msg_chat_id,msg_id,"*⦁ لا يوجد مطورين في
 end
 ListMembers = '\n* ⦁ قائمه مطورين البوت ⇧⇩*\n●○━━━━‌‌‏𝑪𝑶𝑪𝑨𝑰𝑵𝑬━━━━○●\n'
 for k, v in pairs(Info_Members) do
-local UserInfo = LuaTele.getUser(v)
-if UserInfo and UserInfo.username and UserInfo.username ~= "" then
-ListMembers = ListMembers.."*"..k.." - *[@"..UserInfo.username.."](tg://user?id="..v..")\n"
+local ban = LuaTele.getUser(v)
+if ban and ban.username and ban.username ~= "" then
+ListMembers = ListMembers.."*"..k.." - *[@"..ban.username.."](tg://user?id="..v..")\n"
 else
 ListMembers = ListMembers.."*"..k.." -* ["..v.."](tg://user?id="..v..")\n"
 end
@@ -3871,9 +3871,9 @@ return LuaTele.sendText(msg_chat_id,msg_id,"* ⦁ لا يوجد مالكين ف�
 end
 ListMembers = '\n* ⦁ قائمه المالكين في البوت ⇧⇩*\n●○━━━━‌‌‏𝑪𝑶𝑪𝑨𝑰𝑵𝑬━━━━○●\n'
 for k, v in pairs(Info_Members) do
-local UserInfo = LuaTele.getUser(v)
-if UserInfo and UserInfo.username and UserInfo.username ~= "" then
-ListMembers = ListMembers.."*"..k.." - *[@"..UserInfo.username.."](tg://user?id="..v..")\n"
+local ban = LuaTele.getUser(v)
+if ban and ban.username and ban.username ~= "" then
+ListMembers = ListMembers.."*"..k.." - *[@"..ban.username.."](tg://user?id="..v..")\n"
 else
 ListMembers = ListMembers.."*"..k.." -* ["..v.."](tg://user?id="..v..")\n"
 end
@@ -3897,9 +3897,9 @@ return LuaTele.sendText(msg_chat_id,msg_id,"* ⦁ لا يوجد منشئين ا�
 end
 ListMembers = '\n* ⦁ قائمه المنشئين الاساسيين ⇧⇩*\n●○━━━━‌‌‏𝑪𝑶𝑪𝑨𝑰𝑵𝑬━━━━○●\n'
 for k, v in pairs(Info_Members) do
-local UserInfo = LuaTele.getUser(v)
-if UserInfo and UserInfo.username and UserInfo.username ~= "" then
-ListMembers = ListMembers.."*"..k.." - *[@"..UserInfo.username.."](tg://user?id="..v..")\n"
+local ban = LuaTele.getUser(v)
+if ban and ban.username and ban.username ~= "" then
+ListMembers = ListMembers.."*"..k.." - *[@"..ban.username.."](tg://user?id="..v..")\n"
 else
 ListMembers = ListMembers.."*"..k.." -* ["..v.."](tg://user?id="..v..")\n"
 end
@@ -3923,9 +3923,9 @@ return LuaTele.sendText(msg_chat_id,msg_id,"* ⦁ لا يوجد منشئين ف�
 end
 ListMembers = '\n* ⦁ قائمه المنشئين في البوت ⇧⇩*\n●○━━━━‌‌‏𝑪𝑶𝑪𝑨𝑰𝑵𝑬━━━━○●\n'
 for k, v in pairs(Info_Members) do
-local UserInfo = LuaTele.getUser(v)
-if UserInfo and UserInfo.username and UserInfo.username ~= "" then
-ListMembers = ListMembers.."*"..k.." - *[@"..UserInfo.username.."](tg://user?id="..v..")\n"
+local ban = LuaTele.getUser(v)
+if ban and ban.username and ban.username ~= "" then
+ListMembers = ListMembers.."*"..k.." - *[@"..ban.username.."](tg://user?id="..v..")\n"
 else
 ListMembers = ListMembers.."*"..k.." -* ["..v.."](tg://user?id="..v..")\n"
 end
@@ -3949,9 +3949,9 @@ return LuaTele.sendText(msg_chat_id,msg_id,"* ⦁ لا يوجد مدراء في 
 end
 ListMembers = '\n* ⦁ قائمه المدراء في البوت ⇧⇩*\n●○━━━━‌‌‏𝑪𝑶𝑪𝑨𝑰𝑵𝑬━━━━○●\n'
 for k, v in pairs(Info_Members) do
-local UserInfo = LuaTele.getUser(v)
-if UserInfo and UserInfo.username and UserInfo.username ~= "" then
-ListMembers = ListMembers.."*"..k.." - *[@"..UserInfo.username.."](tg://user?id="..v..")\n"
+local ban = LuaTele.getUser(v)
+if ban and ban.username and ban.username ~= "" then
+ListMembers = ListMembers.."*"..k.." - *[@"..ban.username.."](tg://user?id="..v..")\n"
 else
 ListMembers = ListMembers.."*"..k.." -* ["..v.."](tg://user?id="..v..")\n"
 end
@@ -3975,9 +3975,9 @@ return LuaTele.sendText(msg_chat_id,msg_id,"* ⦁ لا يوجد ادمنيه ف�
 end
 ListMembers = '\n* ⦁ قائمه الادمنيه في البوت ⇧⇩*\n●○━━━━‌‌‏𝑪𝑶𝑪𝑨𝑰𝑵𝑬━━━━○●\n'
 for k, v in pairs(Info_Members) do
-local UserInfo = LuaTele.getUser(v)
-if UserInfo and UserInfo.username and UserInfo.username ~= "" then
-ListMembers = ListMembers.."*"..k.." - *[@"..UserInfo.username.."](tg://user?id="..v..")\n"
+local ban = LuaTele.getUser(v)
+if ban and ban.username and ban.username ~= "" then
+ListMembers = ListMembers.."*"..k.." - *[@"..ban.username.."](tg://user?id="..v..")\n"
 else
 ListMembers = ListMembers.."*"..k.." -* ["..v.."](tg://user?id="..v..")\n"
 end
@@ -4001,9 +4001,9 @@ return LuaTele.sendText(msg_chat_id,msg_id,"* ⦁ لا يوجد مميزين ف�
 end
 ListMembers = '\n* ⦁ قائمه المميزين في البوت ⇧⇩*\n●○━━━━‌‌‏𝑪𝑶𝑪𝑨𝑰𝑵𝑬━━━━○●\n'
 for k, v in pairs(Info_Members) do
-local UserInfo = LuaTele.getUser(v)
-if UserInfo and UserInfo.username and UserInfo.username ~= "" then
-ListMembers = ListMembers.."*"..k.." - *[@"..UserInfo.username.."](tg://user?id="..v..")\n"
+local ban = LuaTele.getUser(v)
+if ban and ban.username and ban.username ~= "" then
+ListMembers = ListMembers.."*"..k.." - *[@"..ban.username.."](tg://user?id="..v..")\n"
 else
 ListMembers = ListMembers.."*"..k.." -* ["..v.."](tg://user?id="..v..")\n"
 end
@@ -4027,9 +4027,9 @@ return LuaTele.sendText(msg_chat_id,msg_id,"* ⦁ لا يوجد محظورين �
 end
 ListMembers = '\n* ⦁ قائمه المحظورين عام ⇧⇩*\n●○━━━━‌‌‏𝑪𝑶𝑪𝑨𝑰𝑵𝑬━━━━○●\n'
 for k, v in pairs(Info_Members) do
-local UserInfo = LuaTele.getUser(v)
-if UserInfo and UserInfo.username and UserInfo.username ~= "" then
-ListMembers = ListMembers.."*"..k.." - *[@"..UserInfo.username.."](tg://user?id="..v..")\n"
+local ban = LuaTele.getUser(v)
+if ban and ban.username and ban.username ~= "" then
+ListMembers = ListMembers.."*"..k.." - *[@"..ban.username.."](tg://user?id="..v..")\n"
 else
 ListMembers = ListMembers.."*"..k.." -* ["..v.."](tg://user?id="..v..")\n"
 end
@@ -4053,9 +4053,9 @@ return LuaTele.sendText(msg_chat_id,msg_id," ⦁ لا يوجد مكتومين ع
 end
 ListMembers = '\n* ⦁ قائمه المكتومين عام ⇧⇩*\n●○━━━━‌‌‏𝑪𝑶𝑪𝑨𝑰𝑵𝑬━━━━○●\n'
 for k, v in pairs(Info_Members) do
-local UserInfo = LuaTele.getUser(v)
-if UserInfo and UserInfo.username and UserInfo.username ~= "" then
-ListMembers = ListMembers.."*"..k.." - *[@"..UserInfo.username.."](tg://user?id="..v..")\n"
+local ban = LuaTele.getUser(v)
+if ban and ban.username and ban.username ~= "" then
+ListMembers = ListMembers.."*"..k.." - *[@"..ban.username.."](tg://user?id="..v..")\n"
 else
 ListMembers = ListMembers.."*"..k.." -* ["..v.."](tg://user?id="..v..")\n"
 end
@@ -4079,9 +4079,9 @@ return LuaTele.sendText(msg_chat_id,msg_id,"* ⦁ لا يوجد محظورين �
 end
 ListMembers = '\n* ⦁ قائمه المحظورين في البوت ⇧⇩*\n●○━━━━‌‌‏𝑪𝑶𝑪𝑨𝑰𝑵𝑬━━━━○●\n'
 for k, v in pairs(Info_Members) do
-local UserInfo = LuaTele.getUser(v)
-if UserInfo and UserInfo.username and UserInfo.username ~= "" then
-ListMembers = ListMembers.."*"..k.." - *[@"..UserInfo.username.."](tg://user?id="..v..")\n"
+local ban = LuaTele.getUser(v)
+if ban and ban.username and ban.username ~= "" then
+ListMembers = ListMembers.."*"..k.." - *[@"..ban.username.."](tg://user?id="..v..")\n"
 else
 ListMembers = ListMembers.."*"..k.." -* ["..v.."](tg://user?id="..v..")\n"
 end
@@ -4105,9 +4105,9 @@ return LuaTele.sendText(msg_chat_id,msg_id,"* ⦁ لا يوجد مكتومين �
 end
 ListMembers = '\n* ⦁ قائمه المكتومين في البوت ⇧⇩*\n●○━━━━‌‌‏𝑪𝑶𝑪𝑨𝑰𝑵𝑬━━━━○●\n'
 for k, v in pairs(Info_Members) do
-local UserInfo = LuaTele.getUser(v)
-if UserInfo and UserInfo.username and UserInfo.username ~= "" then
-ListMembers = ListMembers.."*"..k.." - *[@"..UserInfo.username.."](tg://user?id="..v..")\n"
+local ban = LuaTele.getUser(v)
+if ban and ban.username and ban.username ~= "" then
+ListMembers = ListMembers.."*"..k.." - *[@"..ban.username.."](tg://user?id="..v..")\n"
 else
 ListMembers = ListMembers.."*"..k.." -* ["..v.."](tg://user?id="..v..")\n"
 end
@@ -4775,11 +4775,11 @@ if not msg.Originators and not Redis:get(COCAINE.."COCAINE:Status:BanId"..msg_ch
 return LuaTele.sendText(msg_chat_id,msg_id," ⦁ تم تعطيل (الحظر : الطرد : التقييد) من قبل المدراء","md",true)
 end 
 local Message_Reply = LuaTele.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = LuaTele.getUser(Message_Reply.sender.user_id)
-if UserInfo.message == "Invalid user ID" then
+local ban = LuaTele.getUser(Message_Reply.sender.user_id)
+if ban.message == "Invalid user ID" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا تستطيع فقط استخدام الامر على المستخدمين ","md",true)  
 end
-if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
+if ban and ban.type and ban.type.luatele == "userTypeBot" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا لا تستطيع استخدام الامر على البوت ","md",true)  
 end
 if StatusCanOrNotCan(msg_chat_id,Message_Reply.sender.user_id) then
@@ -4819,8 +4819,8 @@ end
 if not msg.Originators and not Redis:get(COCAINE.."COCAINE:Status:BanId"..msg_chat_id) then
 return LuaTele.sendText(msg_chat_id,msg_id," ⦁ تم تعطيل (الحظر : الطرد : التقييد) من قبل المدراء","md",true)
 end 
-local UserInfo = LuaTele.getUser(UserId[3])
-if UserInfo.luatele == "error" and UserInfo.code == 6 then
+local ban = LuaTele.getUser(UserId[3])
+if ban.luatele == "error" and ban.code == 6 then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا لا تستطيع استخدام ايدي خطأ ","md",true)  
 end
 if StatusCanOrNotCan(msg_chat_id,UserId[3]) then
@@ -4911,11 +4911,11 @@ local reply_markup = LuaTele.replyMarkup{type = 'inline',data = {{{text = 'اض�
 return LuaTele.sendText(msg.chat_id,msg.id,'*\n ⦁ عليك الاشتراك في قناة البوت لاستخذام الاوامر*',"md",false, false, false, false, reply_markup)
 end
 local Message_Reply = LuaTele.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = LuaTele.getUser(Message_Reply.sender.user_id)
-if UserInfo.message == "Invalid user ID" then
+local ban = LuaTele.getUser(Message_Reply.sender.user_id)
+if ban.message == "Invalid user ID" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا تستطيع فقط استخدام الامر على المستخدمين ","md",true)  
 end
-if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
+if ban and ban.type and ban.type.luatele == "userTypeBot" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا لا تستطيع استخدام الامر على البوت ","md",true)  
 end
 if Controller(msg_chat_id,Message_Reply.sender.user_id) == 'المطور الاساسي' then
@@ -4950,11 +4950,11 @@ local reply_markup = LuaTele.replyMarkup{type = 'inline',data = {{{text = 'اض�
 return LuaTele.sendText(msg.chat_id,msg.id,'*\n ⦁ عليك الاشتراك في قناة البوت لاستخذام الاوامر*',"md",false, false, false, false, reply_markup)
 end
 local Message_Reply = LuaTele.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = LuaTele.getUser(Message_Reply.sender.user_id)
-if UserInfo.message == "Invalid user ID" then
+local ban = LuaTele.getUser(Message_Reply.sender.user_id)
+if ban.message == "Invalid user ID" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا تستطيع فقط استخدام الامر على المستخدمين ","md",true)  
 end
-if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
+if ban and ban.type and ban.type.luatele == "userTypeBot" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا لا تستطيع استخدام الامر على البوت ","md",true)  
 end
 if not Redis:sismember(COCAINE.."COCAINE:BanAll:Groups",Message_Reply.sender.user_id) then
@@ -4974,11 +4974,11 @@ local reply_markup = LuaTele.replyMarkup{type = 'inline',data = {{{text = 'اض�
 return LuaTele.sendText(msg.chat_id,msg.id,'*\n ⦁ عليك الاشتراك في قناة البوت لاستخذام الاوامر*',"md",false, false, false, false, reply_markup)
 end
 local Message_Reply = LuaTele.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = LuaTele.getUser(Message_Reply.sender.user_id)
-if UserInfo.message == "Invalid user ID" then
+local ban = LuaTele.getUser(Message_Reply.sender.user_id)
+if ban.message == "Invalid user ID" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا تستطيع فقط استخدام الامر على المستخدمين ","md",true)  
 end
-if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
+if ban and ban.type and ban.type.luatele == "userTypeBot" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا لا تستطيع استخدام الامر على البوت ","md",true)  
 end
 if Controller(msg_chat_id,Message_Reply.sender.user_id) == 'المطور الاساسي' then
@@ -5012,11 +5012,11 @@ local reply_markup = LuaTele.replyMarkup{type = 'inline',data = {{{text = 'اض�
 return LuaTele.sendText(msg.chat_id,msg.id,'*\n ⦁ عليك الاشتراك في قناة البوت لاستخذام الاوامر*',"md",false, false, false, false, reply_markup)
 end
 local Message_Reply = LuaTele.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = LuaTele.getUser(Message_Reply.sender.user_id)
-if UserInfo.message == "Invalid user ID" then
+local ban = LuaTele.getUser(Message_Reply.sender.user_id)
+if ban.message == "Invalid user ID" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا تستطيع فقط استخدام الامر على المستخدمين ","md",true)  
 end
-if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
+if ban and ban.type and ban.type.luatele == "userTypeBot" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا لا تستطيع استخدام الامر على البوت ","md",true)  
 end
 if not Redis:sismember(COCAINE.."COCAINE:ktmAll:Groups",Message_Reply.sender.user_id) then
@@ -5044,11 +5044,11 @@ if not msg.Originators and not Redis:get(COCAINE.."COCAINE:Status:BanId"..msg_ch
 return LuaTele.sendText(msg_chat_id,msg_id," ⦁ تم تعطيل (الحظر : الطرد : التقييد) من قبل المدراء","md",true)
 end 
 local Message_Reply = LuaTele.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = LuaTele.getUser(Message_Reply.sender.user_id)
-if UserInfo.message == "Invalid user ID" then
+local ban = LuaTele.getUser(Message_Reply.sender.user_id)
+if ban.message == "Invalid user ID" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا تستطيع فقط استخدام الامر على المستخدمين ","md",true)  
 end
-if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
+if ban and ban.type and ban.type.luatele == "userTypeBot" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا لا تستطيع استخدام الامر على البوت ","md",true)  
 end
 if StatusCanOrNotCan(msg_chat_id,Message_Reply.sender.user_id) then
@@ -5074,11 +5074,11 @@ if msg.can_be_deleted_for_all_users == false then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n* ⦁ عذرا البوت ليس ادمن في المجموعه يرجى ترقيته وتفعيل الصلاحيات له *","md",true)  
 end
 local Message_Reply = LuaTele.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = LuaTele.getUser(Message_Reply.sender.user_id)
-if UserInfo.message == "Invalid user ID" then
+local ban = LuaTele.getUser(Message_Reply.sender.user_id)
+if ban.message == "Invalid user ID" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا تستطيع فقط استخدام الامر على المستخدمين ","md",true)  
 end
-if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
+if ban and ban.type and ban.type.luatele == "userTypeBot" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا لا تستطيع استخدام الامر على البوت ","md",true)  
 end
 if not Redis:sismember(COCAINE.."COCAINE:BanGroup:Group"..msg_chat_id,Message_Reply.sender.user_id) then
@@ -5102,11 +5102,11 @@ if GetInfoBot(msg).Delmsg == false then
 return LuaTele.sendText(msg_chat_id,msg_id,'\n* ⦁ البوت ليس لديه صلاحيه حذف الرسائل* ',"md",true)  
 end
 local Message_Reply = LuaTele.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = LuaTele.getUser(Message_Reply.sender.user_id)
-if UserInfo.message == "Invalid user ID" then
+local ban = LuaTele.getUser(Message_Reply.sender.user_id)
+if ban.message == "Invalid user ID" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا تستطيع فقط استخدام الامر على المستخدمين ","md",true)  
 end
-if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
+if ban and ban.type and ban.type.luatele == "userTypeBot" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا لا تستطيع استخدام الامر على البوت ","md",true)  
 end
 if StatusSilent(msg_chat_id,Message_Reply.sender.user_id) then
@@ -5128,11 +5128,11 @@ local reply_markup = LuaTele.replyMarkup{type = 'inline',data = {{{text = 'اض�
 return LuaTele.sendText(msg.chat_id,msg.id,'*\n ⦁ عليك الاشتراك في قناة البوت لاستخذام الاوامر*',"md",false, false, false, false, reply_markup)
 end
 local Message_Reply = LuaTele.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = LuaTele.getUser(Message_Reply.sender.user_id)
-if UserInfo.message == "Invalid user ID" then
+local ban = LuaTele.getUser(Message_Reply.sender.user_id)
+if ban.message == "Invalid user ID" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا تستطيع فقط استخدام الامر على المستخدمين ","md",true)  
 end
-if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
+if ban and ban.type and ban.type.luatele == "userTypeBot" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا لا تستطيع استخدام الامر على البوت ","md",true)  
 end
 if not Redis:sismember(COCAINE.."COCAINE:SilentGroup:Group"..msg_chat_id,Message_Reply.sender.user_id) then
@@ -5161,11 +5161,11 @@ if not msg.Originators and not Redis:get(COCAINE.."COCAINE:Status:BanId"..msg_ch
 return LuaTele.sendText(msg_chat_id,msg_id," ⦁ تم تعطيل (الحظر : الطرد : التقييد) من قبل المدراء","md",true)
 end 
 local Message_Reply = LuaTele.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = LuaTele.getUser(Message_Reply.sender.user_id)
-if UserInfo.message == "Invalid user ID" then
+local ban = LuaTele.getUser(Message_Reply.sender.user_id)
+if ban.message == "Invalid user ID" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا تستطيع فقط استخدام الامر على المستخدمين ","md",true)  
 end
-if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
+if ban and ban.type and ban.type.luatele == "userTypeBot" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا لا تستطيع استخدام الامر على البوت ","md",true)  
 end
 if StatusCanOrNotCan(msg_chat_id,Message_Reply.sender.user_id) then
@@ -5190,11 +5190,11 @@ if GetInfoBot(msg).BanUser == false then
 return LuaTele.sendText(msg_chat_id,msg_id,'\n* ⦁ البوت ليس لديه صلاحيه حظر المستخدمين* ',"md",true)  
 end
 local Message_Reply = LuaTele.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = LuaTele.getUser(Message_Reply.sender.user_id)
-if UserInfo.message == "Invalid user ID" then
+local ban = LuaTele.getUser(Message_Reply.sender.user_id)
+if ban.message == "Invalid user ID" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا تستطيع فقط استخدام الامر على المستخدمين ","md",true)  
 end
-if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
+if ban and ban.type and ban.type.luatele == "userTypeBot" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا لا تستطيع استخدام الامر على البوت ","md",true)  
 end
 LuaTele.setChatMemberStatus(msg.chat_id,Message_Reply.sender.user_id,'restricted',{1,1,1,1,1,1,1,1})
@@ -5219,11 +5219,11 @@ if not msg.Originators and not Redis:get(COCAINE.."COCAINE:Status:BanId"..msg_ch
 return LuaTele.sendText(msg_chat_id,msg_id," ⦁ تم تعطيل (الحظر : الطرد : التقييد) من قبل المدراء","md",true)
 end 
 local Message_Reply = LuaTele.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = LuaTele.getUser(Message_Reply.sender.user_id)
-if UserInfo.message == "Invalid user ID" then
+local ban = LuaTele.getUser(Message_Reply.sender.user_id)
+if ban.message == "Invalid user ID" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا تستطيع فقط استخدام الامر على المستخدمين ","md",true)  
 end
-if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
+if ban and ban.type and ban.type.luatele == "userTypeBot" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا لا تستطيع استخدام الامر على البوت ","md",true)  
 end
 if StatusCanOrNotCan(msg_chat_id,Message_Reply.sender.user_id) then
@@ -5250,11 +5250,11 @@ if msg.can_be_deleted_for_all_users == false then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n* ⦁ عذرا البوت ليس ادمن في المجموعه يرجى ترقيته وتفعيل الصلاحيات له *","md",true)  
 end
 local Message_Reply = LuaTele.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = LuaTele.getUser(Message_Reply.sender.user_id)
-if UserInfo.message == "Invalid user ID" then
+local ban = LuaTele.getUser(Message_Reply.sender.user_id)
+if ban.message == "Invalid user ID" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا تستطيع فقط استخدام الامر على المستخدمين ","md",true)  
 end
-if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
+if ban and ban.type and ban.type.luatele == "userTypeBot" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا لا تستطيع استخدام الامر على البوت ","md",true)  
 end
 if not Redis:sismember(COCAINE.."COCAINE:MosTafa:Ahmed"..msg_chat_id,Message_Reply.sender.user_id) then
@@ -5275,8 +5275,8 @@ if ChannelJoin(msg) == false then
 local reply_markup = LuaTele.replyMarkup{type = 'inline',data = {{{text = 'اضغط للاشتراك', url = 't.me/Escobar_source'}, },}}
 return LuaTele.sendText(msg.chat_id,msg.id,'*\n ⦁ عليك الاشتراك في قناة البوت لاستخذام الاوامر*',"md",false, false, false, false, reply_markup)
 end
-local UserInfo = LuaTele.getUser(UserId)
-if UserInfo.luatele == "error" and UserInfo.code == 6 then
+local ban = LuaTele.getUser(UserId)
+if ban.luatele == "error" and ban.code == 6 then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا لا تستطيع استخدام ايدي خطأ ","md",true)  
 end 
 if Controller(msg_chat_id,UserId) == 'المطور الاساسي' then
@@ -5311,8 +5311,8 @@ if ChannelJoin(msg) == false then
 local reply_markup = LuaTele.replyMarkup{type = 'inline',data = {{{text = 'اضغط للاشتراك', url = 't.me/Escobar_source'}, },}}
 return LuaTele.sendText(msg.chat_id,msg.id,'*\n ⦁ عليك الاشتراك في قناة البوت لاستخذام الاوامر*',"md",false, false, false, false, reply_markup)
 end
-local UserInfo = LuaTele.getUser(UserId)
-if UserInfo.luatele == "error" and UserInfo.code == 6 then
+local ban = LuaTele.getUser(UserId)
+if ban.luatele == "error" and ban.code == 6 then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا لا تستطيع استخدام ايدي خطأ ","md",true)  
 end
 if not Redis:sismember(COCAINE.."COCAINE:BanAll:Groups",UserId) then
@@ -5332,8 +5332,8 @@ if ChannelJoin(msg) == false then
 local reply_markup = LuaTele.replyMarkup{type = 'inline',data = {{{text = 'اضغط للاشتراك', url = 't.me/Escobar_source'}, },}}
 return LuaTele.sendText(msg.chat_id,msg.id,'*\n ⦁ عليك الاشتراك في قناة البوت لاستخذام الاوامر*',"md",false, false, false, false, reply_markup)
 end
-local UserInfo = LuaTele.getUser(UserId)
-if UserInfo.luatele == "error" and UserInfo.code == 6 then
+local ban = LuaTele.getUser(UserId)
+if ban.luatele == "error" and ban.code == 6 then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا لا تستطيع استخدام ايدي خطأ ","md",true)  
 end 
 if Controller(msg_chat_id,UserId) == 'المطور الاساسي' then
@@ -5367,8 +5367,8 @@ if ChannelJoin(msg) == false then
 local reply_markup = LuaTele.replyMarkup{type = 'inline',data = {{{text = 'اضغط للاشتراك', url = 't.me/Escobar_source'}, },}}
 return LuaTele.sendText(msg.chat_id,msg.id,'*\n ⦁ عليك الاشتراك في قناة البوت لاستخذام الاوامر*',"md",false, false, false, false, reply_markup)
 end
-local UserInfo = LuaTele.getUser(UserId)
-if UserInfo.luatele == "error" and UserInfo.code == 6 then
+local ban = LuaTele.getUser(UserId)
+if ban.luatele == "error" and ban.code == 6 then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا لا تستطيع استخدام ايدي خطأ ","md",true)  
 end
 if not Redis:sismember(COCAINE.."COCAINE:ktmAll:Groups",UserId) then
@@ -5396,8 +5396,8 @@ end
 if not msg.Originators and not Redis:get(COCAINE.."COCAINE:Status:BanId"..msg_chat_id) then
 return LuaTele.sendText(msg_chat_id,msg_id," ⦁ تم تعطيل (الحظر : الطرد : التقييد) من قبل المدراء","md",true)
 end 
-local UserInfo = LuaTele.getUser(UserId)
-if UserInfo.luatele == "error" and UserInfo.code == 6 then
+local ban = LuaTele.getUser(UserId)
+if ban.luatele == "error" and ban.code == 6 then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا لا تستطيع استخدام ايدي خطأ ","md",true)  
 end
 if StatusCanOrNotCan(msg_chat_id,UserId) then
@@ -5426,8 +5426,8 @@ end
 if GetInfoBot(msg).BanUser == false then
 return LuaTele.sendText(msg_chat_id,msg_id,'\n* ⦁ البوت ليس لديه صلاحيه حظر المستخدمين* ',"md",true)  
 end
-local UserInfo = LuaTele.getUser(UserId)
-if UserInfo.luatele == "error" and UserInfo.code == 6 then
+local ban = LuaTele.getUser(UserId)
+if ban.luatele == "error" and ban.code == 6 then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا لا تستطيع استخدام ايدي خطأ ","md",true)  
 end
 if not Redis:sismember(COCAINE.."COCAINE:BanGroup:Group"..msg_chat_id,UserId) then
@@ -5451,8 +5451,8 @@ end
 if GetInfoBot(msg).Delmsg == false then
 return LuaTele.sendText(msg_chat_id,msg_id,'\n* ⦁ البوت ليس لديه صلاحيه حذف الرسائل* ',"md",true)  
 end
-local UserInfo = LuaTele.getUser(UserId)
-if UserInfo.luatele == "error" and UserInfo.code == 6 then
+local ban = LuaTele.getUser(UserId)
+if ban.luatele == "error" and ban.code == 6 then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا لا تستطيع استخدام ايدي خطأ ","md",true)  
 end
 if StatusSilent(msg_chat_id,UserId) then
@@ -5474,8 +5474,8 @@ if ChannelJoin(msg) == false then
 local reply_markup = LuaTele.replyMarkup{type = 'inline',data = {{{text = 'اضغط للاشتراك', url = 't.me/Escobar_source'}, },}}
 return LuaTele.sendText(msg.chat_id,msg.id,'*\n ⦁ عليك الاشتراك في قناة البوت لاستخذام الاوامر*',"md",false, false, false, false, reply_markup)
 end
-local UserInfo = LuaTele.getUser(UserId)
-if UserInfo.luatele == "error" and UserInfo.code == 6 then
+local ban = LuaTele.getUser(UserId)
+if ban.luatele == "error" and ban.code == 6 then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا لا تستطيع استخدام ايدي خطأ ","md",true)  
 end
 if not Redis:sismember(COCAINE.."COCAINE:SilentGroup:Group"..msg_chat_id,UserId) then
@@ -5504,8 +5504,8 @@ end
 if not msg.Originators and not Redis:get(COCAINE.."COCAINE:Status:BanId"..msg_chat_id) then
 return LuaTele.sendText(msg_chat_id,msg_id," ⦁ تم تعطيل (الحظر : الطرد : التقييد) من قبل المدراء","md",true)
 end 
-local UserInfo = LuaTele.getUser(UserId)
-if UserInfo.luatele == "error" and UserInfo.code == 6 then
+local ban = LuaTele.getUser(UserId)
+if ban.luatele == "error" and ban.code == 6 then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا لا تستطيع استخدام ايدي خطأ ","md",true)  
 end
 if StatusCanOrNotCan(msg_chat_id,UserId) then
@@ -5530,8 +5530,8 @@ end
 if GetInfoBot(msg).BanUser == false then
 return LuaTele.sendText(msg_chat_id,msg_id,'\n* ⦁ البوت ليس لديه صلاحيه حظر المستخدمين* ',"md",true)  
 end
-local UserInfo = LuaTele.getUser(UserId)
-if UserInfo.luatele == "error" and UserInfo.code == 6 then
+local ban = LuaTele.getUser(UserId)
+if ban.luatele == "error" and ban.code == 6 then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا لا تستطيع استخدام ايدي خطأ ","md",true)  
 end
 LuaTele.setChatMemberStatus(msg.chat_id,UserId,'restricted',{1,1,1,1,1,1,1,1})
@@ -5620,11 +5620,11 @@ Creator = '→ *{ المالك }*'
 else
 Creator = ""
 end
-local UserInfo = LuaTele.getUser(v.member_id.user_id)
-if UserInfo.username ~= "" then
-listAdmin = listAdmin.."*"..k.." - @"..UserInfo.username.."* "..Creator.."\n"
+local ban = LuaTele.getUser(v.member_id.user_id)
+if ban.username ~= "" then
+listAdmin = listAdmin.."*"..k.." - @"..ban.username.."* "..Creator.."\n"
 else
-listAdmin = listAdmin.."*"..k.." - *["..UserInfo.id.."](tg://user?id="..UserInfo.id..") "..Creator.."\n"
+listAdmin = listAdmin.."*"..k.." - *["..ban.id.."](tg://user?id="..ban.id..") "..Creator.."\n"
 end
 end
 LuaTele.sendText(msg_chat_id,msg_id,listAdmin,"md",true)  
@@ -5666,15 +5666,15 @@ local Info_Members = LuaTele.getSupergroupMembers(msg_chat_id, "Administrators",
 local List_Members = Info_Members.members
 for k, v in pairs(List_Members) do
 if Info_Members.members[k].status.luatele == "chatMemberStatusCreator" then
-local UserInfo = LuaTele.getUser(v.member_id.user_id)
-if UserInfo.first_name == "" then
+local ban = LuaTele.getUser(v.member_id.user_id)
+if ban.first_name == "" then
 LuaTele.sendText(msg_chat_id,msg_id,"* ⦁ المنشئ حسابه محذوف *","md",true)  
 return false
 end
-if UserInfo.username then
-Creator = "* ⦁ المنشئ -› @"..UserInfo.username.."*\n"
+if ban.username then
+Creator = "* ⦁ المنشئ -› @"..ban.username.."*\n"
 else
-Creator = " ⦁ المنشئ -› *["..UserInfo.first_name.."](tg://user?id="..UserInfo.id..")\n"
+Creator = " ⦁ المنشئ -› *["..ban.first_name.."](tg://user?id="..ban.id..")\n"
 end
 return LuaTele.sendText(msg_chat_id,msg_id,Creator,"md",true)  
 end
@@ -5698,14 +5698,14 @@ local List_Members = Info_Members.members
 listBots = '\n* ⦁ قائمه البوتات \n●○━━━━‌‌‏𝑪𝑶𝑪𝑨𝑰𝑵𝑬━━━━○●*\n'
 x = 0
 for k, v in pairs(List_Members) do
-local UserInfo = LuaTele.getUser(v.member_id.user_id)
+local ban = LuaTele.getUser(v.member_id.user_id)
 if Info_Members.members[k].status.luatele == "chatMemberStatusAdministrator" then
 x = x + 1
 Admin = '→ *{ ادمن }*'
 else
 Admin = ""
 end
-listBots = listBots.."*"..k.." - @"..UserInfo.username.."* "..Admin.."\n"
+listBots = listBots.."*"..k.." - @"..ban.username.."* "..Admin.."\n"
 end
 LuaTele.sendText(msg_chat_id,msg_id,listBots.."*\n●○━━━━‌‌‏𝑪𝑶𝑪𝑨𝑰𝑵𝑬━━━━○●\n ⦁ عدد البوتات التي هي ادمن ( "..x.." )*","md",true)  
 end
@@ -5732,11 +5732,11 @@ for k, v in pairs(List_Members) do
 if Info_Members.members[k].status.is_member == true and Info_Members.members[k].status.luatele == "chatMemberStatusRestricted" then
 y = true
 x = x + 1
-local UserInfo = LuaTele.getUser(v.member_id.user_id)
-if UserInfo.username ~= "" then
-restricted = restricted.."*"..x.." - @"..UserInfo.username.."*\n"
+local ban = LuaTele.getUser(v.member_id.user_id)
+if ban.username ~= "" then
+restricted = restricted.."*"..x.." - @"..ban.username.."*\n"
 else
-restricted = restricted.."*"..x.." - *["..UserInfo.id.."](tg://user?id="..UserInfo.id..") \n"
+restricted = restricted.."*"..x.." - *["..ban.id.."](tg://user?id="..ban.id..") \n"
 end
 end
 end
@@ -5757,11 +5757,11 @@ local Info_Members = LuaTele.searchChatMembers(msg_chat_id, "*", 200)
 local List_Members = Info_Members.members
 listall = '\n* ⦁ قائمه الاعضاء \n●○━━━━‌‌‏𝑪𝑶𝑪𝑨𝑰𝑵𝑬━━━━○●*\n'
 for k, v in pairs(List_Members) do
-local UserInfo = LuaTele.getUser(v.member_id.user_id)
-if UserInfo.username ~= "" then
-listall = listall.."*"..k.." - @"..UserInfo.username.."*\n"
+local ban = LuaTele.getUser(v.member_id.user_id)
+if ban.username ~= "" then
+listall = listall.."*"..k.." - @"..ban.username.."*\n"
 else
-listall = listall.."*"..k.." -* ["..UserInfo.id.."](tg://user?id="..UserInfo.id..")\n"
+listall = listall.."*"..k.." -* ["..ban.id.."](tg://user?id="..ban.id..")\n"
 end
 end
 LuaTele.sendText(msg_chat_id,msg_id,listall,"md",true)  
@@ -7957,11 +7957,11 @@ local reply_markup = LuaTele.replyMarkup{type = 'inline',data = {{{text = 'اض�
 return LuaTele.sendText(msg.chat_id,msg.id,'*\n ⦁ عليك الاشتراك في قناة البوت لاستخذام الاوامر*',"md",false, false, false, false, reply_markup)
 end
 local Message_Reply = LuaTele.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = LuaTele.getUser(Message_Reply.sender.user_id)
-if UserInfo.message == "Invalid user ID" then
+local ban = LuaTele.getUser(Message_Reply.sender.user_id)
+if ban.message == "Invalid user ID" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا تستطيع فقط استخدام الامر على المستخدمين ","md",true)  
 end
-if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
+if ban and ban.type and ban.type.luatele == "userTypeBot" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا لا تستطيع استخدام الامر على البوت ","md",true)  
 end
 if Redis:sismember(COCAINE.."COCAINE:Developers:Groups",Message_Reply.sender.user_id) then
@@ -8163,11 +8163,11 @@ if GetInfoBot(msg).SetAdmin == false then
 return LuaTele.sendText(msg_chat_id,msg_id,'\n* ⦁ البوت ليس لديه صلاحيه اضافة مشرفين* ',"md",true)  
 end
 local Message_Reply = LuaTele.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = LuaTele.getUser(Message_Reply.sender.user_id)
-if UserInfo.message == "Invalid user ID" then
+local ban = LuaTele.getUser(Message_Reply.sender.user_id)
+if ban.message == "Invalid user ID" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا تستطيع فقط استخدام الامر على المستخدمين ","md",true)  
 end
-if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
+if ban and ban.type and ban.type.luatele == "userTypeBot" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا لا تستطيع استخدام الامر على البوت ","md",true)  
 end
 local SetCustomTitle = https.request("https://api.telegram.org/bot"..Token.."/setChatAdministratorCustomTitle?chat_id="..msg_chat_id.."&user_id="..Message_Reply.sender.user_id.."&custom_title="..CustomTitle)
@@ -8226,11 +8226,11 @@ if GetInfoBot(msg).SetAdmin == false then
 return LuaTele.sendText(msg_chat_id,msg_id,'\n* ⦁ البوت ليس لديه صلاحيه اضافة مشرفين* ',"md",true)  
 end
 local Message_Reply = LuaTele.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = LuaTele.getUser(Message_Reply.sender.user_id)
-if UserInfo.message == "Invalid user ID" then
+local ban = LuaTele.getUser(Message_Reply.sender.user_id)
+if ban.message == "Invalid user ID" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا تستطيع فقط استخدام الامر على المستخدمين ","md",true)  
 end
-if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
+if ban and ban.type and ban.type.luatele == "userTypeBot" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا لا تستطيع استخدام الامر على البوت ","md",true)  
 end
 local SetAdmin = LuaTele.setChatMemberStatus(msg.chat_id,Message_Reply.sender.user_id,'administrator',{1 ,1, 0, 0, 0, 0, 0 , 0, 0, 0, 0, 0, ''})
@@ -8302,11 +8302,11 @@ if GetInfoBot(msg).SetAdmin == false then
 return LuaTele.sendText(msg_chat_id,msg_id,'\n* ⦁ البوت ليس لديه صلاحيه اضافة مشرفين* ',"md",true)  
 end
 local Message_Reply = LuaTele.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = LuaTele.getUser(Message_Reply.sender.user_id)
-if UserInfo.message == "Invalid user ID" then
+local ban = LuaTele.getUser(Message_Reply.sender.user_id)
+if ban.message == "Invalid user ID" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا تستطيع فقط استخدام الامر على المستخدمين ","md",true)  
 end
-if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
+if ban and ban.type and ban.type.luatele == "userTypeBot" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا لا تستطيع استخدام الامر على البوت ","md",true)  
 end
 local SetAdmin = LuaTele.setChatMemberStatus(msg.chat_id,Message_Reply.sender.user_id,'administrator',{0 ,0, 0, 0, 0, 0, 0 ,0, 0})
@@ -8743,8 +8743,8 @@ local Info_Members = LuaTele.searchChatMembers(msg_chat_id, "*", 200)
 local List_Members = Info_Members.members
 x = 0
 for k, v in pairs(List_Members) do
-local UserInfo = LuaTele.getUser(v.member_id.user_id)
-if UserInfo.type.luatele == "userTypeDeleted" then
+local ban = LuaTele.getUser(v.member_id.user_id)
+if ban.type.luatele == "userTypeDeleted" then
 local userTypeDeleted = LuaTele.setChatMemberStatus(msg.chat_id,v.member_id.user_id,'banned',0)
 if userTypeDeleted.luatele == "ok" then
 x = x + 1
@@ -9016,11 +9016,11 @@ end
 
 if text == 'كشف القيود' and msg.reply_to_message_id ~= 0 then
 local Message_Reply = LuaTele.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = LuaTele.getUser(Message_Reply.sender.user_id)
-if UserInfo.message == "Invalid user ID" then
+local ban = LuaTele.getUser(Message_Reply.sender.user_id)
+if ban.message == "Invalid user ID" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا تستطيع فقط استخدام الامر على المستخدمين ","md",true)  
 end
-if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
+if ban and ban.type and ban.type.luatele == "userTypeBot" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا لا تستطيع استخدام الامر على البوت ","md",true)  
 end
 if not msg.Addictive then
@@ -9103,11 +9103,11 @@ LuaTele.sendText(msg_chat_id,msg_id,"\n* ⦁ معلومات الكشف \n●○�
 end
 if text == 'رفع القيود' and msg.reply_to_message_id ~= 0 then
 local Message_Reply = LuaTele.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = LuaTele.getUser(Message_Reply.sender.user_id)
-if UserInfo.message == "Invalid user ID" then
+local ban = LuaTele.getUser(Message_Reply.sender.user_id)
+if ban.message == "Invalid user ID" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا تستطيع فقط استخدام الامر على المستخدمين ","md",true)  
 end
-if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
+if ban and ban.type and ban.type.luatele == "userTypeBot" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا لا تستطيع استخدام الامر على البوت ","md",true)  
 end
 if not msg.Addictive then
@@ -9226,7 +9226,7 @@ return LuaTele.sendText(msg_chat_id,msg_id,TextingDevCOCAINE,"md",true)
 else
 local photo = LuaTele.getUserProfilePhotos(Sudo_Id)
 if photo.total_count > 0 then
-local UserInfo = LuaTele.getUser(Sudo_Id)
+local ban = LuaTele.getUser(Sudo_Id)
 local T = '* ❲ 𝑫𝒆𝒗𝒆𝒍𝒐𝒑𝒆𝒓𝒔 𝑩𝒐𝒕 ❳\n— — — — — — — — —\n‹ : 𝑫𝒆𝒗 𝑵𝒂𝒎𝒆 : *['..ban.first_name..'](tg://user?id='..ban.id..')*\n‹ : 𝑫𝒆𝒗 𝑩𝒊𝒐 : getbio(Sudo_Id)*'
 keyboard = {} 
 keyboard.inline_keyboard = {
@@ -9237,7 +9237,7 @@ keyboard.inline_keyboard = {
 local msgg = msg_id/2097152/0.5
 https.request("https://api.telegram.org/bot"..Token.."/sendphoto?chat_id=" .. msg_chat_id .. "&photo="..photo.photos[1].sizes[#photo.photos[1].sizes].photo.remote.id.."&caption=".. URL.escape(T).."&reply_to_message_id="..msgg.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard))
 else
-return LuaTele.sendText(msg_chat_id,msg_id,'\n* ⦁ مطور البوت : {*['..UserInfo.first_name..'](tg://user?id='..UserInfo.id..')*}*',"md",true)  
+return LuaTele.sendText(msg_chat_id,msg_id,'\n* ⦁ مطور البوت : {*['..ban.first_name..'](tg://user?id='..ban.id..')*}*',"md",true)  
 end
 end
 end
@@ -10061,9 +10061,9 @@ return LuaTele.sendText(msg_chat_id,msg_id," ⦁ تم حذف اسم البوت "
 end
 if text == "بوت" or text == "البوت" or text == "bot" or text == "Bot" then
 local photo = LuaTele.getUserProfilePhotos(COCAINE)
-local UserInfo = LuaTele.getUser(COCAINE)
-for Name_User in string.gmatch(UserInfo.first_name, "[^%s]+" ) do
-UserInfo.first_name = Name_User
+local ban = LuaTele.getUser(COCAINE)
+for Name_User in string.gmatch(ban.first_name, "[^%s]+" ) do
+ban.first_name = Name_User
 break
 end 
 local NamesBot = (Redis:get(COCAINE.."COCAINE:Name:Bot") or "كوكين")
@@ -10097,9 +10097,9 @@ end
 end
 if text == (Redis:get(COCAINE.."COCAINE:Name:Bot") or "كوكين") then
 local photo = LuaTele.getUserProfilePhotos(COCAINE)
-local UserInfo = LuaTele.getUser(COCAINE)
-for Name_User in string.gmatch(UserInfo.first_name, "[^%s]+" ) do
-UserInfo.first_name = Name_User
+local ban = LuaTele.getUser(COCAINE)
+for Name_User in string.gmatch(ban.first_name, "[^%s]+" ) do
+ban.first_name = Name_User
 break
 end 
 local NamesBot = (Redis:get(COCAINE.."COCAINE:Name:Bot") or "كوكين")
@@ -11068,11 +11068,11 @@ if not msg.Addictive then
 return LuaTele.sendText(msg_chat_id,msg_id,'\n* ⦁ هاذا الامر يخص 『 '..Controller_Num(7)..' 』* ',"md",true)  
 end
 local Message_Reply = LuaTele.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = LuaTele.getUser(Message_Reply.sender.user_id)
-if UserInfo.message == "Invalid user ID" then
+local ban = LuaTele.getUser(Message_Reply.sender.user_id)
+if ban.message == "Invalid user ID" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا تستطيع فقط استخدام الامر على المستخدمين ","md",true)  
 end
-if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
+if ban and ban.type and ban.type.luatele == "userTypeBot" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا لا تستطيع استخدام الامر على البوت ","md",true)  
 end
 Redis:incrby(COCAINE.."COCAINE:Num:Add:Games"..msg.chat_id..Message_Reply.sender.user_id, text:match("^اضف مجوهرات (%d+)$"))  
@@ -11087,11 +11087,11 @@ if not msg.Addictive then
 return LuaTele.sendText(msg_chat_id,msg_id,'\n* ⦁ هاذا الامر يخص 『 '..Controller_Num(7)..' 』* ',"md",true)  
 end
 local Message_Reply = LuaTele.getMessage(msg.chat_id, msg.reply_to_message_id)
-local UserInfo = LuaTele.getUser(Message_Reply.sender.user_id)
-if UserInfo.message == "Invalid user ID" then
+local ban = LuaTele.getUser(Message_Reply.sender.user_id)
+if ban.message == "Invalid user ID" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا تستطيع فقط استخدام الامر على المستخدمين ","md",true)  
 end
-if UserInfo and UserInfo.type and UserInfo.type.luatele == "userTypeBot" then
+if ban and ban.type and ban.type.luatele == "userTypeBot" then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n ⦁ عذرا لا تستطيع استخدام الامر على البوت ","md",true)  
 end
 Redis:incrby(COCAINE.."COCAINE:Num:Message:User"..msg.chat_id..":"..Message_Reply.sender.user_id, text:match("^اضف رسائل (%d+)$"))  
@@ -11659,10 +11659,10 @@ return LuaTele.sendText(msg_chat_id,msg_id," ⦁ لا يوجد محظورين ع
 end
 ListMembers = '\n* ⦁ قائمه المحظورين عام  \n●○━━━━‌‌‏𝑪𝑶𝑪𝑨𝑰𝑵𝑬━━━━○●*\n'
 for k, v in pairs(Info_Members) do
-local UserInfo = LuaTele.getUser(v)
+local ban = LuaTele.getUser(v)
 var(v)
-if UserInfo and UserInfo.username and UserInfo.username ~= "" then
-ListMembers = ListMembers.."*"..k.." - *[@"..UserInfo.username.."](tg://user?id="..v..")\n"
+if ban and ban.username and ban.username ~= "" then
+ListMembers = ListMembers.."*"..k.." - *[@"..ban.username.."](tg://user?id="..v..")\n"
 else
 ListMembers = ListMembers.."*"..k.." -* ["..v.."](tg://user?id="..v..")\n"
 end
@@ -11686,9 +11686,9 @@ return LuaTele.sendText(msg_chat_id,msg_id," ⦁ لا يوجد مطورين في
 end
 ListMembers = '\n* ⦁ قائمه مطورين البوت \n●○━━━━‌‌‏𝑪𝑶𝑪𝑨𝑰𝑵𝑬━━━━○●*\n'
 for k, v in pairs(Info_Members) do
-local UserInfo = LuaTele.getUser(v)
-if UserInfo and UserInfo.username and UserInfo.username ~= "" then
-ListMembers = ListMembers.."*"..k.." - *[@"..UserInfo.username.."](tg://user?id="..v..")\n"
+local ban = LuaTele.getUser(v)
+if ban and ban.username and ban.username ~= "" then
+ListMembers = ListMembers.."*"..k.." - *[@"..ban.username.."](tg://user?id="..v..")\n"
 else
 ListMembers = ListMembers.."*"..k.." -* ["..v.."](tg://user?id="..v..")\n"
 end
@@ -11712,9 +11712,9 @@ return LuaTele.sendText(msg_chat_id,msg_id," ⦁ لا يوجد مطورين في
 end
 ListMembers = '\n* ⦁ قائمه مطورين البوت \n●○━━━━‌‌‏𝑪𝑶𝑪𝑨𝑰𝑵𝑬━━━━○●*\n'
 for k, v in pairs(Info_Members) do
-local UserInfo = LuaTele.getUser(v)
-if UserInfo and UserInfo.username and UserInfo.username ~= "" then
-ListMembers = ListMembers.."*"..k.." - *[@"..UserInfo.username.."](tg://user?id="..v..")\n"
+local ban = LuaTele.getUser(v)
+if ban and ban.username and ban.username ~= "" then
+ListMembers = ListMembers.."*"..k.." - *[@"..ban.username.."](tg://user?id="..v..")\n"
 else
 ListMembers = ListMembers.."*"..k.." -* ["..v.."](tg://user?id="..v..")\n"
 end
@@ -12262,7 +12262,7 @@ local TextHelp = [[*
 ●○━━━━‌‌‏𝑪𝑶𝑪𝑨𝑰𝑵𝑬━━━━○●
 𓄼 رفع + تنزيل ⇦ كلب 𓄹
 𓄼 تاك للكلاب 𓄹
-●○━━━━‌‌‏𝑪𝑶𝑪𝑨𝑰𝑵𝑬━━━━○●
+●○━━━━‌‌‏𝑪??𝑪𝑨𝑰𝑵𝑬━━━━○●
 𓄼 رفع + تنزيل ⇦ قرد 𓄹
 𓄼 تاك للقرود 𓄹
 ●○━━━━‌‌‏𝑪𝑶𝑪𝑨𝑰𝑵𝑬━━━━○●
