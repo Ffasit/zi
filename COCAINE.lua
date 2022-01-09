@@ -9259,10 +9259,12 @@ return LuaTele.sendText(msg_chat_id,msg_id,'*● لا توجد صوره ف حس�
 end
 end
 end
+end
 if text and text:match("^قول (.*)$")then
 local m = text:match("^قول (.*)$")
 if Redis:get(COCAINE.."Status:kool"..msg.chat_id) then
 return LuaTele.sendText(msg_chat_id,msg_id,m,"md",true) 
+end
 end
 if text == "صورتي" then
 if Redis:get(COCAINE.."Status:photo"..msg.chat_id) then
@@ -9271,6 +9273,7 @@ if photo.total_count > 0 then
 return LuaTele.sendPhoto(msg.chat_id, msg.id, photo.photos[1].sizes[#photo.photos[1].sizes].photo.remote.id,"*عدد صورك هو "..photo.total_count.." صوره*", "md")
 else
 return LuaTele.sendText(msg_chat_id,msg_id,'*● لا توجد صوره ف حسابك*',"md",true) 
+end
 end
 end
 if text == "غنيلي" then
@@ -9500,7 +9503,7 @@ data = {
 },
 }
 }
-return LuaTele.sendText(msg_chat_id,msg_id,'*ضحكتك عثل زيكك ينوحيي ??❤️*',"md",false, false, false, false, reply_markup)
+return LuaTele.sendText(msg_chat_id,msg_id,'*ضحكتك عثل زيكك ينوحيي 🌝❤️*',"md",false, false, false, false, reply_markup)
 end
 if text == '🤔' or text == '🤔🤔' then
 if not Redis:get(COCAINE.."COCAINE:Sasa:Jeka"..msg_chat_id) then
