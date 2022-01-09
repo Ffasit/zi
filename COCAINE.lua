@@ -2344,7 +2344,7 @@ end
 end   
 Get_Json = Get_Json..'],'
 end
-Get_Json = Get_Json..'"Dev":"J_A_B_W_A"}'
+Get_Json = Get_Json..'"Dev":"Q_o_ll"}'
 end
 Get_Json = Get_Json..'}}'
 local File = io.open('./'..UserBot..'.json', "w")
@@ -3834,7 +3834,7 @@ local Info_Members = Redis:smembers(COCAINE.."COCAINE:Developers:Groups")
 if #Info_Members == 0 then
 return LuaTele.sendText(msg_chat_id,msg_id,"*⦁ لا يوجد مطورين في البوت*","md",true)  
 end
-ListMembers = '\n* ⦁ قائمه مطورين البوت ⇧⇩*\n●○━━━━‌‌‏𝑪𝑶𝑪𝑨𝑰??𝑬━━━━○●\n'
+ListMembers = '\n* ⦁ قائمه مطورين البوت ⇧⇩*\n●○━━━━‌‌‏𝑪𝑶𝑪𝑨𝑰𝑵𝑬━━━━○●\n'
 for k, v in pairs(Info_Members) do
 local UserInfo = LuaTele.getUser(v)
 if UserInfo and UserInfo.username and UserInfo.username ~= "" then
@@ -4225,6 +4225,19 @@ if TextMsg == 'اطردني' then
 Redis:set(COCAINE.."COCAINE:Status:KickMe"..msg_chat_id,true) 
 return LuaTele.sendText(msg_chat_id,msg_id,"* ⦁ تم تفعيل اطردني *","md",true)
 end
+if TextMsg == 'صورتي' then
+Redis:set(COCAINE.."Status:photo"..msg_chat_id,true) 
+return LuaTele.sendText(msg_chat_id,msg_id,"⦁ تم تفعيل صورتي ","md",true)
+end
+
+if TextMsg == 'قول' then
+Redis:set(COCAINE.."Status:kool"..msg_chat_id,true) 
+return LuaTele.sendText(msg_chat_id,msg_id,"⦁ تم تفعيل امر قول ","md",true)
+end
+if TextMsg == 'جمالي' then
+Redis:set(COCAINE.."Status:gamle"..msg_chat_id,true) 
+return LuaTele.sendText(msg_chat_id,msg_id,"⦁ تم تفعيل جمالي ","md",true)
+end
 if TextMsg == 'ردود السورس' then
 Redis:set(COCAINE.."COCAINE:Sasa:Jeka"..msg_chat_id,true) 
 return LuaTele.sendText(msg_chat_id,msg_id,"* ⦁ تم تفعيل ردود السورس *","md",true)
@@ -4374,6 +4387,18 @@ if TextMsg == 'التحقق' then
 if TextMsg == 'اطردني' then
 Redis:del(COCAINE.."COCAINE:Status:KickMe"..msg_chat_id) 
 return LuaTele.sendText(msg_chat_id,msg_id,"* ⦁ تم تعطيل اطردني *","md",true)
+end
+if TextMsg == 'صورتي' then
+Redis:del(COCAINE.."Status:photo"..msg_chat_id) 
+return LuaTele.sendText(msg_chat_id,msg_id,"⦁ تم تعطيل صورتي ","md",true)
+end
+if TextMsg == 'قول' then
+Redis:del(COCAINE.."Status:kool"..msg_chat_id) 
+return LuaTele.sendText(msg_chat_id,msg_id,"⦁ تم تعطيل امر قول ","md",true)
+end
+if TextMsg == 'جمالي' then
+Redis:del(COCAINE.."Status:gamle"..msg_chat_id) 
+return LuaTele.sendText(msg_chat_id,msg_id,"⦁ تم تعطيل جمالي ","md",true)
 end
 if TextMsg == 'ردود السورس' then
 Redis:del(COCAINE.."COCAINE:Sasa:Jeka"..msg_chat_id) 
@@ -7719,7 +7744,7 @@ local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9172,13 +9197,67 @@ local TextingDevCOCAINE = Redis:get(COCAINE..'COCAINE:Texting:DevCOCAINE')
 if TextingDevCOCAINE then 
 return LuaTele.sendText(msg_chat_id,msg_id,TextingDevCOCAINE,"md",true)  
 else
+local photo = LuaTele.getUserProfilePhotos(Sudo_Id)
+if photo.total_count > 0 then
 local UserInfo = LuaTele.getUser(Sudo_Id)
-for Name_User in string.gmatch(UserInfo.first_name, "[^%s]+" ) do
-UserInfo.first_name = Name_User
-break
-end 
+local T = '* ❲ 𝑫𝒆𝒗𝒆𝒍𝒐𝒑𝒆𝒓𝒔 𝑩𝒐𝒕 ❳\n— — — — — — — — —\n‹ : 𝑫𝒆𝒗 𝑵𝒂𝒎𝒆 : *['..ban.first_name..'](tg://user?id='..ban.id..')*\n‹ : 𝑫𝒆𝒗 𝑩𝒊𝒐 : getbio(Sudo_Id)*'
+keyboard = {} 
+keyboard.inline_keyboard = {
+{
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬 . 𖠋', url = "https://t.me/Escobar_source"}
+},
+}
+local msgg = msg_id/2097152/0.5
+https.request("https://api.telegram.org/bot"..Token.."/sendphoto?chat_id=" .. msg_chat_id .. "&photo="..photo.photos[1].sizes[#photo.photos[1].sizes].photo.remote.id.."&caption=".. URL.escape(T).."&reply_to_message_id="..msgg.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard))
+else
 return LuaTele.sendText(msg_chat_id,msg_id,'\n* ⦁ مطور البوت : {*['..UserInfo.first_name..'](tg://user?id='..UserInfo.id..')*}*',"md",true)  
 end
+end
+if text == "جمالي" or text == 'نسبه جمالي' then
+if Redis:get(COCAINE.."Status:gamle"..msg.chat_id) then
+local photo = LuaTele.getUserProfilePhotos(msg.sender.user_id)
+if msg.Developers then
+if photo.total_count > 0 then
+return LuaTele.sendPhoto(msg.chat_id, msg.id, photo.photos[1].sizes[#photo.photos[1].sizes].photo.remote.id,"*نسبه جمالك هي 900% عشان مطور ولازم اطبله😹♥*", "md")
+else
+return LuaTele.sendText(msg_chat_id,msg_id,'*● لا توجد صوره ف حسابك*',"md",true) 
+end
+else
+if photo.total_count > 0 then
+local nspp = {"10","20","30","35","75","34","66","82","23","19","55","80","63","32","27","89","99","98","79","100","8","3","6","0",}
+local rdbhoto = nspp[math.random(#nspp)]
+return LuaTele.sendPhoto(msg.chat_id, msg.id, photo.photos[1].sizes[#photo.photos[1].sizes].photo.remote.id,"*نسبه جمالك هي "..rdbhoto.."% 🙄♥*", "md")
+else
+return LuaTele.sendText(msg_chat_id,msg_id,'*● لا توجد صوره ف حسابك*',"md",true) 
+end
+end
+end
+if text and text:match("^قول (.*)$")then
+local m = text:match("^قول (.*)$")
+if Redis:get(COCAINE.."Status:kool"..msg.chat_id) then
+return LuaTele.sendText(msg_chat_id,msg_id,m,"md",true) 
+end
+if text == "صورتي" then
+if Redis:get(COCAINE.."Status:photo"..msg.chat_id) then
+local photo = LuaTele.getUserProfilePhotos(msg.sender.user_id)
+if photo.total_count > 0 then
+return LuaTele.sendPhoto(msg.chat_id, msg.id, photo.photos[1].sizes[#photo.photos[1].sizes].photo.remote.id,"*عدد صورك هو "..photo.total_count.." صوره*", "md")
+else
+return LuaTele.sendText(msg_chat_id,msg_id,'*● لا توجد صوره ف حسابك*',"md",true) 
+end
+end
+if text == "غنيلي" then
+local t = "اليك اغنيه عشوائيه من البوت"
+Num = math.random(8,83)
+Mhm = math.random(108,143)
+Mhhm = math.random(166,179)
+Mmhm = math.random(198,216)
+Mhmm = math.random(257,626)
+local Texting = {Num,Mhm,Mhhm,Mmhm,Mhmm}
+local Rrr = Texting[math.random(#Texting)]
+local m = "https://t.me/mmsst13/"..Rrr..""
+local rep = msg.id/2097152/0.5
+https.request("https://api.telegram.org/bot"..Token.."/sendaudio?chat_id="..msg_chat_id.."&caption="..URL.escape(t).."&audio="..m.."&reply_to_message_id="..rep.."&parse_mode=Markdown")
 end
 if text == 'السورس' or text == 'سورس' or text == 'يا سورس' or text == 'source' then
 photo = "http://t.me/Escobar_source"
@@ -9187,12 +9266,14 @@ local T =[[
 ]]
 keyboard = {} 
 keyboard.inline_keyboard = {
-
 {
-{text = '˹  𝑱𝑶𝑲 ⁦. 𓌗', url = "https://t.me/J_A_B_W_A"},{text = '˹  𝐵𝐴𝑁𝐷𝐴 ⁦. 𖠋', url = "https://t.me/Dev_Jeka"}
+{text = '˹  𝑱𝑶𝑲 ⁦. 𓌗', url = "https://t.me/JOKN1"},{text = '˹  𝐵𝐴𝑁𝐷𝐴 ⁦. 𖠋', url = "https://t.me/Q_o_ll"}
 },
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = "https://t.me/Escobar_source"}
+{text = '˹  𝑴𝑬𝑫𝑼𝑺𝑨 ⁦. 𓌗', url = "https://t.me/Medusavip21"},{text = '˹  𝑻𝑾𝑺𝑶 ⁦. 𖠋', url = "https://t.me/B_Ld_3"}
+},
+{
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬 . 𖠋', url = "https://t.me/Escobar_source"}
 },
 }
 local msgg = msg_id/2097152/0.5
@@ -9218,7 +9299,7 @@ data = {
 {text = '𖠋❺𖠋', data = msg.sender.user_id..'/listallAddorrem'}, {text = '𖠋❻𖠋', data = msg.sender.user_id..'/NoNextSeting'}, 
 },
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9248,7 +9329,7 @@ data = {
 {text = '𖠋 الاضافات 𖠋', data = msg.sender.user_id..'/helma3'}, 
 },
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9262,7 +9343,7 @@ local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9276,7 +9357,7 @@ local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9290,7 +9371,7 @@ local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9304,7 +9385,7 @@ local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9318,7 +9399,7 @@ local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9332,7 +9413,7 @@ local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9346,7 +9427,7 @@ local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9360,7 +9441,7 @@ local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9374,7 +9455,7 @@ local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9388,7 +9469,7 @@ local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9402,7 +9483,7 @@ local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9416,7 +9497,7 @@ local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9430,7 +9511,7 @@ local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9444,7 +9525,7 @@ local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9458,7 +9539,7 @@ local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9472,7 +9553,7 @@ local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9486,7 +9567,7 @@ local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9500,7 +9581,7 @@ local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9514,7 +9595,7 @@ local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9528,7 +9609,7 @@ local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9542,7 +9623,7 @@ local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9556,7 +9637,7 @@ local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9570,7 +9651,7 @@ local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9584,7 +9665,7 @@ local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9598,7 +9679,7 @@ local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9612,7 +9693,7 @@ local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9626,7 +9707,7 @@ local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9640,7 +9721,7 @@ local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9654,7 +9735,7 @@ local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9668,7 +9749,7 @@ local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9682,7 +9763,7 @@ local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9696,7 +9777,7 @@ local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9710,7 +9791,7 @@ local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9724,7 +9805,7 @@ local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9738,7 +9819,7 @@ local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9752,7 +9833,7 @@ local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9766,7 +9847,7 @@ local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9780,7 +9861,7 @@ local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9794,7 +9875,7 @@ local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9808,7 +9889,7 @@ local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9822,7 +9903,7 @@ local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9836,7 +9917,7 @@ local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9850,7 +9931,7 @@ local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9864,7 +9945,7 @@ local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9878,7 +9959,7 @@ local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9892,7 +9973,7 @@ local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -9906,7 +9987,7 @@ local reply_markup = LuaTele.replyMarkup{
 type = 'inline',
 data = {
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -11056,7 +11137,7 @@ data = {
 {text = 'أضغط لاضافه ألبوت لمجموعتك 𖠪', url = 't.me/'..UserBot..'?startgroup=new'}, 
 },
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -11069,7 +11150,7 @@ data = {
 {text = 'أضغط لاضافه ألبوت لمجموعتك 𖠪', url = 't.me/'..UserBot..'?startgroup=new'}, 
 },
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -11917,7 +11998,7 @@ data = {
 {text = '𖠋 القائمه الرئيسيه 𖠋', data = IdUser..'/helpall'}, 
 },
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -11942,7 +12023,7 @@ data = {
 {text = '𖠋 القائمه الرئيسيه 𖠋', data = IdUser..'/helpall'}, 
 },
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -12011,7 +12092,7 @@ data = {
 {text = '𖠋 القائمه الرئيسيه 𖠋', data = IdUser..'/helpall'},
 },
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -12067,7 +12148,7 @@ data = {
 {text = '𖠋 القائمه الرئيسيه 𖠋', data = IdUser..'/helpall'}, 
 },
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -12137,7 +12218,7 @@ data = {
 {text = '𖠋❺𖠋', data = IdUser..'/listallAddorrem'}, {text = '𖠋❻𖠋', data = IdUser..'/NoNextSeting'}, 
 },
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -12206,7 +12287,7 @@ data = {
 {text = '𖠋❺𖠋', data = IdUser..'/listallAddorrem'}, {text = '𖠋❻𖠋', data = IdUser..'/NoNextSeting'}, 
 },
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
@@ -12307,7 +12388,7 @@ data = {
 {text = '𖠋❺𖠋', data = IdUser..'/listallAddorrem'}, {text = '𖠋❻𖠋', data = IdUser..'/NoNextSeting'}, 
 },
 {
-{text = '˹  𝘚𝘖𝘜𝘙𝘊𝘌 𝘊𝘖𝘊𝘈𝘐𝘕𝘌  . 𖠋', url = 't.me/Escobar_source'}, 
+{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬  . 𖠋', url = 't.me/Escobar_source'}, 
 },
 }
 }
