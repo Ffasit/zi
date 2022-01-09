@@ -9219,27 +9219,7 @@ end
 Redis:del(COCAINE..'COCAINE:Texting:DevCOCAINE')
 return LuaTele.sendText(msg_chat_id,msg_id,' ⦁ تم حذف كليشه المطور')
 end
-if text == 'المطور' or text == 'مطور' then
-local TextingDevCOCAINE = Redis:get(COCAINE..'COCAINE:Texting:DevCOCAINE')
-if TextingDevCOCAINE then 
-return LuaTele.sendText(msg_chat_id,msg_id,TextingDevCOCAINE,"md",true)  
-else
-local photo = LuaTele.getUserProfilePhotos(Sudo_Id)
-if photo.total_count > 0 then
-local UserInfo = LuaTele.getUser(Sudo_Id)
-local T = '* ❲ 𝑫𝒆𝒗𝒆𝒍𝒐𝒑𝒆𝒓𝒔 𝑩𝒐𝒕 ❳\n— — — — — — — — —\n‹ : 𝑫𝒆𝒗 𝑵𝒂𝒎𝒆 : *['..ban.first_name..'](tg://user?id='..ban.id..')*\n‹ : 𝑫𝒆𝒗 𝑩𝒊𝒐 : getbio(Sudo_Id)*'
-keyboard = {} 
-keyboard.inline_keyboard = {
-{
-{text = '˹  𝑺𝑶𝑼𝑹𝑪𝑬 𝑪𝑶𝑪𝑨𝑰𝑵𝑬 . 𖠋', url = "https://t.me/Escobar_source"}
-},
-}
-local msgg = msg_id/2097152/0.5
-https.request("https://api.telegram.org/bot"..Token.."/sendphoto?chat_id=" .. msg_chat_id .. "&photo="..photo.photos[1].sizes[#photo.photos[1].sizes].photo.remote.id.."&caption=".. URL.escape(T).."&reply_to_message_id="..msgg.."&parse_mode=markdown&disable_web_page_preview=true&reply_markup="..JSON.encode(keyboard))
-else
-return LuaTele.sendText(msg_chat_id,msg_id,'\n* ⦁ مطور البوت : {*['..UserInfo.first_name..'](tg://user?id='..UserInfo.id..')*}*',"md",true)  
-end
-end
+
 if text == "جمالي" or text == 'نسبه جمالي' then
 if Redis:get(COCAINE.."Status:gamle"..msg.chat_id) then
 local photo = LuaTele.getUserProfilePhotos(msg.sender.user_id)
@@ -9783,7 +9763,7 @@ data = {
 },
 }
 }
-return LuaTele.sendText(msg_chat_id,msg_id,'*لا عيب بتكسف 😹💔*',"md",false, false, false, false, reply_markup)
+return LuaTele.sendText(msg_chat_id,msg_id,'*لا عيب بتكسف ??💔*',"md",false, false, false, false, reply_markup)
 end
 if text == 'هيح' or text == 'لسه صاحي' then
 if not Redis:get(COCAINE.."COCAINE:Sasa:Jeka"..msg_chat_id) then
